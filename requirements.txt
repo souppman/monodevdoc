@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+llama-index
+llama-index-vector-stores-pinecone
+llama-index-llms-openai
+llama-index-embeddings-openai
+openai
+pinecone
+pydantic-settings
+python-dotenv
+pytest
+# git+https://github.com/souppman/devdoc-contracts.git # Already installed, keeping for reference

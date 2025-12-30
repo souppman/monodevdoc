@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: DevDoc Journal Service
+  version: 1.0.0
+  description: API for managing developer journal entries with Git context.
+servers:
+  - url: http://localhost:3000
+paths:
+  /journal/entries:
+    post:
+      summary: Create a journal entry
+      description: Creates a new journal entry and links it to Git metadata. Triggers RAG indexing.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+                - project_id
+                - author_id
+                - git_context
+              properties:
+                content:
+                  type: string
+                  example: "Refactored the auth middleware to use JWT."
+                project_id:
+                  type: string
+                  format: uuid
+                  example: "123e4567-e89b-12d3-a456-426614174000"
+                author_id:
+                  type: string
+                  format: uuid
+                  example: "user_123"
+                git_context:
+                  type: object
+                  required:
+                    - git_commit_hash
+                    - git_branch
+                    - author_id
+                    - repo_url
+                  properties:
+                    git_commit_hash:
+                      type: string
+                      example: "a1b2c3d"
+                    git_branch:
+                      type: string
+                      example: "feature/auth-refactor"
+                    file_path:
+                      type: string
+                      example: "src/middleware/auth.ts"
+                    author_id:
+                      type: string
+                      example: "github_user_1"
+                    repo_url:
+                      type: string
+                      example: "https://github.com/org/repo"
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  content:
+                    type: string
+        '502':
+          description: RAG Service Unavailable (Rollback Triggered)
+    get:
+      summary: Retrieve journal entries
+      parameters:
+        - in: query
+          name: commit_hash
+          schema:
+            type: string
+          description: Filter by Git commit hash
+        - in: query
+          name: project_id
+          schema:
+            type: string
+          description: Filter by Project ID
+      responses:
+        '200':
+          description: List of journal entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /webhooks/github:
+    post:
+      summary: Handle GitHub Webhooks
+      responses:
+        '200':
+          description: Event processed

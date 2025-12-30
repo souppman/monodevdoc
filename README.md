@@ -2,13 +2,13 @@
 
 Unified repository for DevDoc services and shared contracts.
 
-## 📁 Repository Structure
+##  Repository Structure
 
 - **`packages/contracts`**: Shared API type definitions (TypeScript & Python).
 - **`services/journal-service`**: Node.js Express service with Prisma.
 - **`services/rag-service`**: FastAPI Python service for RAG.
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - [pnpm](https://pnpm.io/) (v9+)
@@ -26,7 +26,7 @@ pnpm install
 pnpm run build
 ```
 
-## 🛠 Service Development
+##  Service Development
 
 ### Journal Service (Node.js)
 ```bash
@@ -57,7 +57,7 @@ If you modify types in `packages/contracts`, rebuild them to sync with other ser
 pnpm --filter devdoc-contracts build
 ```
 
-## 📜 Monorepo Commands
+##  Monorepo Commands
 
 - `pnpm run build`: Build all packages and services.
 - `pnpm run test`: Run tests across the entire workspace.

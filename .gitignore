@@ -1,0 +1,18 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
+
+# Architecture & Internal Documentation
+project-overview.md
+devdoc-constitution.md
+devdoc-constitution2.md
+journal-service.md
+docs.md
+
+# Agent & System
+.agent/
+.DS_Store
+dist/
+coverage/

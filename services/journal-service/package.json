@@ -22,7 +22,7 @@
     "@types/yamljs": "^0.2.34",
     "axios": "^1.13.2",
     "cors": "^2.8.5",
-    "devdoc-contracts": "file:../devdoc-contracts",
+    "devdoc-contracts": "workspace:*",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-pino-logger": "^7.0.0",

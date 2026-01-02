@@ -4,9 +4,11 @@ Unified repository for DevDoc services and shared contracts.
 
 ##  Repository Structure
 
-- **`packages/contracts`**: Shared API type definitions (TypeScript & Python).
+- **`apps/web`**: Next.js Frontend (UI).
+- **`services/bff`**: Next.js BFF (API Gateway/Orchestration).
 - **`services/journal-service`**: Node.js Express service with Prisma.
 - **`services/rag-service`**: FastAPI Python service for RAG.
+- **`packages/contracts`**: Shared API type definitions (TypeScript & Python).
 
 ##  Getting Started
 

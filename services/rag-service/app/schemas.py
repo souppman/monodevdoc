@@ -10,6 +10,7 @@ class RAGQueryRequest(BaseModel):
     project_id: str
     filters: Optional[dict] = None
     top_k: int = 10
+    model: Optional[str] = None
 
 class RelevantContext(BaseModel):
     id: str

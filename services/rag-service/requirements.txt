@@ -4,7 +4,9 @@ pydantic
 llama-index
 llama-index-vector-stores-pinecone
 llama-index-llms-openai
+llama-index-llms-openai-like
 llama-index-embeddings-openai
+llama-index-embeddings-huggingface
 openai
 pinecone
 pydantic-settings

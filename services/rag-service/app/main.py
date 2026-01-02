@@ -44,7 +44,8 @@ async def query_documents(request: RAGQueryRequest):
         response = rag_service.query_request(
             query=request.query,
             filters=request.filters,
-            top_k=request.top_k
+            top_k=request.top_k,
+            model=request.model
         )
         
         # Convert LlamaIndex response to our contract

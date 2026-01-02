@@ -18,21 +18,19 @@ class RAGService:
     def _initialize_settings(self):
         """
         Configure LlamaIndex globally.
-        - Embeddings: Local HuggingFace (BAAI/bge-small-en-v1.5) - Fast, free, high quality.
-        - LLM: DeepSeek (Remote) via OpenAI compatibility.
+        - Embeddings: Local HuggingFace (BAAI/bge-small-en-v1.5).
+        - LLM: OpenRouter (Unified API for DeepSeek, GPT, etc.)
         """
         # Configure Embeddings (Local)
-        # This avoids the DeepSeek embedding compatibility issue entirely.
         Settings.embed_model = HuggingFaceEmbedding(
             model_name="BAAI/bge-small-en-v1.5"
         )
 
-        # Configure LLM (DeepSeek)
-        # Use OpenAILike to avoid strict model name validation
+        # Configure Default LLM via OpenRouter
         Settings.llm = OpenAILike(
-            api_key=settings.OPENAI_API_KEY,
-            api_base=settings.OPENAI_BASE_URL,
-            model="deepseek-chat",
+            api_key=settings.LLM_API_KEY,
+            api_base=settings.LLM_BASE_URL,
+            model=settings.DEFAULT_MODEL,
             temperature=0.1,
             is_chat_model=True
         )
@@ -79,12 +77,24 @@ class RAGService:
         logger.info(f"Successfully indexed {request.metadata.id}")
         return request.metadata.id
 
-    def query_request(self, query: str, filters: dict = None, top_k: int = 10):
+    def query_request(self, query: str, filters: dict = None, top_k: int = 10, model: str = None):
         """
-        Queries the Pinecone index using DeepSeek for synthesis.
+        Queries the Pinecone index with an optional model preference.
         """
         vector_store = self._get_vector_store()
         index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
+
+        # Apply specific model for this query if provided, otherwise use default
+        llm = Settings.llm
+        if model:
+            logger.info(f"Using requested model: {model}")
+            llm = OpenAILike(
+                api_key=settings.LLM_API_KEY,
+                api_base=settings.LLM_BASE_URL,
+                model=model,
+                temperature=0.1,
+                is_chat_model=True
+            )
 
         # Build Metadata Filters if present
         from llama_index.core.vector_stores import MetadataFilters, ExactMatchFilter
@@ -98,6 +108,7 @@ class RAGService:
 
         # Create Query Engine
         query_engine = index.as_query_engine(
+            llm=llm,
             filters=query_filters,
             similarity_top_k=top_k
         )

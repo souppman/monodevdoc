@@ -1,3 +1,4 @@
+import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
 export default function GenerateLayout({
@@ -6,9 +7,12 @@ export default function GenerateLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex-1">{children}</div>
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <Header />
+      <div className="flex-1 flex">
+        <Sidebar />
+        {children}
+      </div>
     </div>
   );
 }

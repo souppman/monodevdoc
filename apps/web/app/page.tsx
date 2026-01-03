@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { FileCodeCorner } from 'lucide-react';
 
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <main className="flex flex-col items-center justify-center gap-8 text-center">
         {/* Logo placeholder */}
-        <div className="w-40 h-40 bg-gray-300 flex items-center justify-center text-gray-600 text-sm">
-          (logo)
+        <div className="w-40 h-40 flex items-center justify-center">
+          <FileCodeCorner className="w-35 h-35 text-blue-600"/>
         </div>
 
         {/* Main heading */}
@@ -22,7 +23,7 @@ export default function Home() {
         {/* Connect GitHub button */}
         <Link
           href="/github-auth"
-          className="px-8 py-3 bg-gray-300 text-black text-base rounded hover:bg-gray-400 transition-colors"
+          className="px-8 py-3 bg-blue-600 text-white text-base rounded hover:bg-blue-700 transition-colors"
         >
           Connect GitHub Repository
         </Link>

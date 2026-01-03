@@ -44,10 +44,7 @@ export default function Dashboard() {
     <div className="flex-1 bg-white">
       {/* Header */}
       <header className="border-b border-gray-200 px-8 py-6 flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-600">test-project /</p>
-          <h1 className="text-3xl font-bold text-black">Documentation Overview</h1>
-        </div>
+        <h1 className="text-3xl font-bold text-black">Documentation Overview</h1>
         <Link
           href="/dashboard/new"
           className="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-black rounded transition-colors"

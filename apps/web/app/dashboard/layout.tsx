@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header actionButton={{ label: 'New Doc', href: '/dashboard/new' }} />
+      <Header />
       <div className="flex-1 flex">
         <Sidebar />
         {children}

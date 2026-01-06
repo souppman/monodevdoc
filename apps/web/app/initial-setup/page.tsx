@@ -36,7 +36,7 @@ export default function InitialSetup() {
             type="text"
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded text-base focus:outline-none focus:border-gray-400"
+            className="w-full px-4 py-3 border border-gray-300 rounded text-base text-gray-500 focus:outline-none focus:border-gray-400"
           />
         </div>
 

@@ -49,7 +49,7 @@ export default function JournalDashboard() {
         <h1 className="text-3xl font-bold text-black">Developer Journal</h1>
         <Link
           href="/journal/new"
-          className="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-black rounded transition-colors"
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
         >
           + New Entry
         </Link>
@@ -59,40 +59,40 @@ export default function JournalDashboard() {
       <div className="px-8 py-4 flex gap-4">
         <button
           onClick={() => setActiveFilter('all')}
-          className={`px-6 py-2 rounded transition-colors ${
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
             activeFilter === 'all'
-              ? 'bg-gray-300 text-black'
-              : 'bg-gray-200 text-black hover:bg-gray-300'
+              ? 'bg-blue-100 text-blue-700'
+              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
           }`}
         >
           All (47)
         </button>
         <button
           onClick={() => setActiveFilter('commit')}
-          className={`px-6 py-2 rounded transition-colors ${
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
             activeFilter === 'commit'
-              ? 'bg-gray-300 text-black'
-              : 'bg-gray-200 text-black hover:bg-gray-300'
+              ? 'bg-blue-100 text-blue-700'
+              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
           }`}
         >
           By Commit
         </button>
         <button
           onClick={() => setActiveFilter('branch')}
-          className={`px-6 py-2 rounded transition-colors ${
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
             activeFilter === 'branch'
-              ? 'bg-gray-300 text-black'
-              : 'bg-gray-200 text-black hover:bg-gray-300'
+              ? 'bg-blue-100 text-blue-700'
+              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
           }`}
         >
           By Branch
         </button>
         <button
           onClick={() => setActiveFilter('tagged')}
-          className={`px-6 py-2 rounded transition-colors ${
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
             activeFilter === 'tagged'
-              ? 'bg-gray-300 text-black'
-              : 'bg-gray-200 text-black hover:bg-gray-300'
+              ? 'bg-blue-100 text-blue-700'
+              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
           }`}
         >
           Tagged

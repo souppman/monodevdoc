@@ -14,9 +14,47 @@ export default function NewJournalEntry() {
     content: 'Decided to use JWT tokens instead of sessions for authentication to provide better scalability for our distributed architecture and ...',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/journal');
+    setIsSubmitting(true);
+
+    try {
+      // Transform form data to match the expected schema
+      // TODO: Get real user/project IDs from auth context
+      const payload = {
+        content: formData.content,
+        author_id: 'user-test-1',
+        project_id: 'proj-test-1',
+        git_context: {
+          git_commit_hash: formData.commit,
+          git_branch: formData.branch,
+          author_id: 'user-test-1',
+          repo_url: 'https://github.com/souppman/monodevdoc'
+        }
+      };
+
+      const res = await fetch('/api/journal/entries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to create entry');
+      }
+
+      router.push('/journal');
+      router.refresh();
+    } catch (error) {
+      console.error('Error submitting journal entry:', error);
+      alert('Failed to save journal entry. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancel = () => {
@@ -135,9 +173,11 @@ export default function NewJournalEntry() {
             </button>
             <button
               type="submit"
-              className="px-6 py-3 bg-gray-300 hover:bg-gray-400 text-black rounded transition-colors"
+              disabled={isSubmitting}
+              className={`px-6 py-3 bg-gray-300 hover:bg-gray-400 text-black rounded transition-colors ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
             >
-              Save Entry
+              {isSubmitting ? 'Saving...' : 'Save Entry'}
             </button>
           </div>
         </form>

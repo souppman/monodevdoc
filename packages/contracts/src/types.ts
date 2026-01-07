@@ -62,3 +62,37 @@ export interface BFFProjectDashboardRequest {
     project_id: string;
     user_id: string;
 }
+
+// RAG Service Contracts
+export interface RAGQueryRequest {
+    query: string;
+    project_id: string;
+    filters?: {
+        file_path?: string;
+        git_branch?: string;
+        author_id?: string;
+        time_range?: {
+            start: string;
+            end: string;
+        };
+    };
+    user_id?: string; // For personalized results
+}
+
+export interface RAGQueryResponse {
+    results: {
+        content: string;
+        source: 'journal' | 'code' | 'general';
+        metadata: any;
+    }[];
+    generated_answer: string;
+}
+
+// Journal Service Contracts
+export interface GetJournalEntriesRequest {
+    project_id?: string;
+    git_commit_hash?: string;
+    author_id?: string;
+    limit?: number;
+    offset?: number;
+}

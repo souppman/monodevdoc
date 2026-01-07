@@ -69,12 +69,9 @@ export const createJournalEntry = async (input: JournalEntryInput) => {
         await axios.post(`${RAG_SERVICE_URL}/index`, ragPayload);
         logger.info({ entryId: savedEntry.id }, 'Successfully indexed to RAG');
     } catch (ragError: any) {
-        logger.error({ err: ragError }, 'RAG Indexing failed, performing rollback');
-
-        // ROLLBACK
-        await prisma.journalEntry.delete({ where: { id: savedEntry.id } });
-
-        throw new Error('RAG Service unavailable - Entry rolled back');
+        logger.warn({ err: ragError }, 'RAG Indexing failed, but entry saved to DB');
+        // No rollback - we want to keep the entry even if RAG is down
+        // await prisma.journalEntry.delete({ where: { id: savedEntry.id } });
     }
 
     return savedEntry;

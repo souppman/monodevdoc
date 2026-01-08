@@ -59,7 +59,7 @@ export default function JournalDashboard() {
             : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
             }`}
         >
-          All (47)
+          All ({journalEntries.length})
         </button>
         <button
           onClick={() => setActiveFilter('commit')}

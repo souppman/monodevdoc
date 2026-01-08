@@ -30,6 +30,8 @@ export const createJournalEntry = async (input: JournalEntryInput) => {
     // 1. Create in DB
     let savedEntry;
     try {
+
+
         savedEntry = await prisma.journalEntry.create({
             data: {
                 id: input.id || undefined,
@@ -69,7 +71,8 @@ export const createJournalEntry = async (input: JournalEntryInput) => {
         await axios.post(`${RAG_SERVICE_URL}/index`, ragPayload);
         logger.info({ entryId: savedEntry.id }, 'Successfully indexed to RAG');
     } catch (ragError: any) {
-        logger.warn({ err: ragError }, 'RAG Indexing failed, but entry saved to DB');
+        const errorDetail = ragError.response?.data || ragError.message;
+        logger.warn({ err: errorDetail, status: ragError.response?.status }, 'RAG Indexing failed, but entry saved to DB');
         // No rollback - we want to keep the entry even if RAG is down
         // await prisma.journalEntry.delete({ where: { id: savedEntry.id } });
     }

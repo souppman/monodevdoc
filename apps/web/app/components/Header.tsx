@@ -3,6 +3,8 @@
 import { FileCode2 } from 'lucide-react';
 import Link from 'next/link';
 
+import { useState, useEffect } from 'react';
+
 interface HeaderProps {
   currentRepository?: string;
   actionButton?: {
@@ -12,9 +14,20 @@ interface HeaderProps {
 }
 
 export default function Header({
-  currentRepository = 'test-project /',
+  currentRepository: propRepo,
   actionButton
 }: HeaderProps) {
+  const [repoName, setRepoName] = useState(propRepo || '');
+
+  useEffect(() => {
+    if (!propRepo) {
+      const stored = localStorage.getItem('current_project_id');
+      if (stored) {
+        setRepoName(stored + ' /');
+      }
+    }
+  }, [propRepo]);
+
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
       {/* Logo and Brand */}
@@ -25,7 +38,7 @@ export default function Header({
 
       {/* Current Repository */}
       <div className="flex items-center gap-2 text-gray-600">
-          <span className="text-sm font-medium">{currentRepository}</span>
+        <span className="text-sm font-medium">{repoName}</span>
       </div>
     </header>
   );

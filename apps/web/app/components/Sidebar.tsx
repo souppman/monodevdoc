@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -6,6 +7,20 @@ import { BookOpen, FileText, GitBranch, Sparkles, Settings, Search } from 'lucid
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [recentCommits, setRecentCommits] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/journal/entries')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          // Filter for entries with commit hashes and take top 3
+          const commits = data.filter((e: any) => e.gitCommitHash).slice(0, 3);
+          setRecentCommits(commits);
+        }
+      })
+      .catch(err => console.error('Failed to fetch recent commits', err));
+  }, []);
 
   const navItems = [
     {
@@ -58,11 +73,10 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                active
-                  ? 'bg-blue-50 text-blue-600 font-medium'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${active
+                ? 'bg-blue-50 text-blue-600 font-medium'
+                : 'text-gray-700 hover:bg-gray-100'
+                }`}
             >
               <Icon className="w-5 h-5" />
               <span>{item.label}</span>
@@ -77,15 +91,18 @@ export default function Sidebar() {
           Recent Commits
         </h3>
         <div className="space-y-2 text-sm">
-          <div className="text-gray-600">
-            <span className="font-mono text-xs">abc123f</span> - Fix auth bug
-          </div>
-          <div className="text-gray-600">
-            <span className="font-mono text-xs">def456a</span> - Add user model
-          </div>
-          <div className="text-gray-600">
-            <span className="font-mono text-xs">ghi789b</span> - Update docs
-          </div>
+          {recentCommits.length > 0 ? (
+            recentCommits.map((commit, idx) => (
+              <div key={idx} className="text-gray-600 truncate">
+                <span className="font-mono text-xs font-bold mr-1">
+                  {commit.gitCommitHash ? commit.gitCommitHash.substring(0, 7) : '-------'}
+                </span>
+                - {commit.content ? (commit.content.length > 20 ? commit.content.substring(0, 20) + '...' : commit.content) : 'No description'}
+              </div>
+            ))
+          ) : (
+            <div className="text-gray-400 italic text-xs">No recent activity</div>
+          )}
         </div>
       </div>
     </aside>

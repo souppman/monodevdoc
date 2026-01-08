@@ -1,0 +1,1012 @@
+
+> devdoc-journal-service@1.0.0 dev /Users/ryancampbell/monodevdoc/services/journal-service
+> ts-node src/app.ts
+
+[dotenv@17.2.3] injecting env (5) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+(node:1192) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[16:43:51.039] INFO (1192): Journal Service running on port 3001
+[16:43:51.039] INFO (1192): Swagger docs available at http://localhost:3001/api-docs
+[16:44:13.875] INFO (1192): request completed
+    req: {
+      "id": 1,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "user-agent": "curl/8.7.1",
+        "accept": "*/*"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52399
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 622
+[16:48:55.283] INFO (1192): request completed
+    req: {
+      "id": 2,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52489
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 165
+[16:48:55.423] INFO (1192): request completed
+    req: {
+      "id": 3,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52489
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 122
+[16:49:01.458] INFO (1192): request completed
+    req: {
+      "id": 4,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52495
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 109
+[16:49:01.596] INFO (1192): request completed
+    req: {
+      "id": 5,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52495
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 115
+[16:49:03.553] INFO (1192): request completed
+    req: {
+      "id": 6,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52503
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[16:49:03.562] INFO (1192): request completed
+    req: {
+      "id": 7,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52503
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[16:49:12.541] INFO (1192): request completed
+    req: {
+      "id": 8,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52513
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 129
+[16:49:12.586] INFO (1192): request completed
+    req: {
+      "id": 9,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52513
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 37
+[16:49:14.318] INFO (1192): request completed
+    req: {
+      "id": 10,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52513
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 433
+[16:49:14.374] INFO (1192): request completed
+    req: {
+      "id": 11,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52513
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 36
+[16:49:14.929] INFO (1192): request completed
+    req: {
+      "id": 12,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52521
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[16:49:14.938] INFO (1192): request completed
+    req: {
+      "id": 13,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52521
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[16:49:52.649] INFO (1192): request completed
+    req: {
+      "id": 14,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52536
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 229
+[16:49:52.791] INFO (1192): request completed
+    req: {
+      "id": 15,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52536
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 113
+[16:50:01.363] INFO (1192): request completed
+    req: {
+      "id": 16,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52546
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 113
+[16:50:01.491] INFO (1192): request completed
+    req: {
+      "id": 17,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52546
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 109
+[16:50:02.599] INFO (1192): request completed
+    req: {
+      "id": 18,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52551
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[16:50:02.608] INFO (1192): request completed
+    req: {
+      "id": 19,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52551
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[16:50:06.661] INFO (1192): request completed
+    req: {
+      "id": 20,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52557
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 35
+[16:50:06.706] INFO (1192): request completed
+    req: {
+      "id": 21,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52557
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 34
+[16:50:19.755] INFO (1192): request completed
+    req: {
+      "id": 22,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52573
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 200
+[16:50:19.810] INFO (1192): request completed
+    req: {
+      "id": 23,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52573
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 37
+[16:50:47.626] INFO (1192): request completed
+    req: {
+      "id": 24,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52587
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 74
+[16:50:47.669] INFO (1192): request completed
+    req: {
+      "id": 25,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52587
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 34
+[16:50:49.825] INFO (1192): request completed
+    req: {
+      "id": 26,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52594
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 4
+[16:50:49.833] INFO (1192): request completed
+    req: {
+      "id": 27,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52594
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[16:50:51.313] INFO (1192): request completed
+    req: {
+      "id": 28,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52587
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 116
+[16:50:51.439] INFO (1192): request completed
+    req: {
+      "id": 29,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52587
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 115
+[16:50:53.076] INFO (1192): request completed
+    req: {
+      "id": 30,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52605
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[16:50:53.089] INFO (1192): request completed
+    req: {
+      "id": 31,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52605
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[16:50:55.018] INFO (1192): request completed
+    req: {
+      "id": 32,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52587
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 40
+[16:50:55.066] INFO (1192): request completed
+    req: {
+      "id": 33,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52587
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 35
+[16:53:16.425] INFO (1192): request completed
+    req: {
+      "id": 34,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52666
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[16:53:16.444] INFO (1192): request completed
+    req: {
+      "id": 35,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52666
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1

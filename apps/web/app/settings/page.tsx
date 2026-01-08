@@ -1,6 +1,17 @@
+'use client';
+import { useState, useEffect } from 'react';
 import { Github, Zap, TreePine, Slack, SquareKanban, Download } from 'lucide-react';
 
 export default function Settings() {
+    const [repoName, setRepoName] = useState('github.com/user/test-project');
+
+    useEffect(() => {
+        const stored = localStorage.getItem('current_project_id');
+        if (stored) {
+            setRepoName(`github.com/souppman/${stored}`);
+        }
+    }, []);
+
     return (
         <div className="flex-1 bg-white">
             {/* Header */}
@@ -10,7 +21,7 @@ export default function Settings() {
 
             {/* Settings List */}
             <main className="px-8 py-6 space-y-6">
-                
+
                 {/* Repository Configuration */}
                 <div className="px-8 py-6 border border-gray-200 rounded-lg">
                     <h2 className="text-xl font-semibold text-gray-900 mb-4">Repository Configuration</h2>
@@ -23,7 +34,7 @@ export default function Settings() {
                                 <input
                                     type="text"
                                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-black"
-                                    defaultValue="github.com/user/test-project"
+                                    value={repoName} // Changed from defaultValue
                                     readOnly
                                 />
                                 <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
@@ -38,7 +49,6 @@ export default function Settings() {
                             <select className="px-4 py-2 border border-gray-300 rounded-lg text-black">
                                 <option>main</option>
                                 <option>develop</option>
-                                <option>really-long-branch-name-test</option>
                             </select>
                         </div>
                     </div>
@@ -84,7 +94,7 @@ export default function Settings() {
                                 </div>
                                 <div>
                                     <div className="font-medium text-gray-900">GitHub</div>
-                                    <div className="text-sm text-gray-500">Connected as @user</div>
+                                    <div className="text-sm text-gray-500">Connected to Repository</div>
                                 </div>
                             </div>
                             <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">Connected</span>

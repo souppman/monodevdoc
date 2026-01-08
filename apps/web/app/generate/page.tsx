@@ -19,8 +19,49 @@ export default function GenerateDocumentation() {
     instructions: 'Focus on microservices architecture and include deployment strategies ...',
   });
 
-  const handleGenerate = () => {
-    console.log('Generating documentation...', formData);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedDoc, setGeneratedDoc] = useState<string | null>(null);
+
+  const handleGenerate = async () => {
+    setIsGenerating(true);
+    setGeneratedDoc(null);
+
+    try {
+      // Construct a prompt based on form selection
+      const prompt = `
+        Generate ${formData.docType} for the current project.
+        Context: ${formData.context.currentBranch ? 'Current Branch' : ''} ${formData.context.allBranches ? 'All Branches' : ''}.
+        Include Journal Entries: ${formData.journal.allEntries ? 'Yes' : 'No'}.
+        Additional Instructions: ${formData.instructions}
+      `;
+
+      const res = await fetch('/api/rag/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: prompt,
+          project_id: 'proj-test-1', // Hardcoded for now until Auth context is ready
+          top_k: 5,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to generate documentation');
+      }
+
+      const data = await res.json();
+
+      const snippets = data.results.map((r: any) => `### Source: ${r.metadata?.source || 'Unknown'}\n\n${r.content}`).join('\n\n---\n\n');
+      setGeneratedDoc(snippets || 'No relevant context found.');
+
+    } catch (error) {
+      console.error('Error generating docs:', error);
+      alert('Failed to generate documentation. Please check console.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -70,9 +111,8 @@ export default function GenerateDocumentation() {
                 className="w-full px-6 py-4 bg-gray-300 hover:bg-gray-400 transition-colors rounded flex items-center gap-3"
               >
                 <div
-                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${
-                    formData.context.currentBranch ? 'bg-black' : 'bg-white'
-                  }`}
+                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${formData.context.currentBranch ? 'bg-black' : 'bg-white'
+                    }`}
                 >
                   {formData.context.currentBranch && <span className="text-white text-sm">✓</span>}
                 </div>
@@ -89,9 +129,8 @@ export default function GenerateDocumentation() {
                 className="w-full px-6 py-4 bg-gray-300 hover:bg-gray-400 transition-colors rounded flex items-center gap-3"
               >
                 <div
-                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${
-                    formData.context.allBranches ? 'bg-black' : 'bg-white'
-                  }`}
+                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${formData.context.allBranches ? 'bg-black' : 'bg-white'
+                    }`}
                 >
                   {formData.context.allBranches && <span className="text-white text-sm">✓</span>}
                 </div>
@@ -108,9 +147,8 @@ export default function GenerateDocumentation() {
                 className="w-full px-6 py-4 bg-gray-300 hover:bg-gray-400 transition-colors rounded flex items-center gap-3"
               >
                 <div
-                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${
-                    formData.context.recentCommits ? 'bg-black' : 'bg-white'
-                  }`}
+                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${formData.context.recentCommits ? 'bg-black' : 'bg-white'
+                    }`}
                 >
                   {formData.context.recentCommits && <span className="text-white text-sm">✓</span>}
                 </div>
@@ -133,9 +171,8 @@ export default function GenerateDocumentation() {
                 className="w-full px-6 py-4 bg-gray-300 hover:bg-gray-400 transition-colors rounded flex items-center gap-3"
               >
                 <div
-                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${
-                    formData.journal.allEntries ? 'bg-black' : 'bg-white'
-                  }`}
+                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${formData.journal.allEntries ? 'bg-black' : 'bg-white'
+                    }`}
                 >
                   {formData.journal.allEntries && <span className="text-white text-sm">✓</span>}
                 </div>
@@ -152,9 +189,8 @@ export default function GenerateDocumentation() {
                 className="w-full px-6 py-4 bg-gray-300 hover:bg-gray-400 transition-colors rounded flex items-center gap-3"
               >
                 <div
-                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${
-                    formData.journal.taggedOnly ? 'bg-black' : 'bg-white'
-                  }`}
+                  className={`w-6 h-6 rounded flex items-center justify-center border-2 border-black ${formData.journal.taggedOnly ? 'bg-black' : 'bg-white'
+                    }`}
                 >
                   {formData.journal.taggedOnly && <span className="text-white text-sm">✓</span>}
                 </div>
@@ -180,12 +216,26 @@ export default function GenerateDocumentation() {
           {/* Generate button */}
           <button
             onClick={handleGenerate}
-            className="w-full py-4 bg-gray-300 hover:bg-gray-400 text-black text-lg rounded transition-colors"
+            disabled={isGenerating}
+            className={`w-full py-4 bg-gray-300 hover:bg-gray-400 text-black text-lg rounded transition-colors ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
           >
-            Generate Documentation
+            {isGenerating ? 'Generating...' : 'Generate Documentation'}
           </button>
         </div>
       </main>
+
+      {/* Result Display */}
+      {generatedDoc && (
+        <section className="max-w-4xl mx-auto px-8 pb-12">
+          <div className="bg-gray-100 p-8 rounded-lg border border-gray-300">
+            <h2 className="text-2xl font-bold text-black mb-4">Generated Context (RAG Verification)</h2>
+            <div className="prose max-w-none text-black whitespace-pre-wrap">
+              {generatedDoc}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

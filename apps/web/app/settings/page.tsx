@@ -10,7 +10,7 @@ export default function Settings() {
 
             {/* Settings List */}
             <main className="px-8 py-6 space-y-6">
-                
+
                 {/* Repository Configuration */}
                 <div className="px-8 py-6 border border-gray-200 rounded-lg">
                     <h2 className="text-xl font-semibold text-gray-900 mb-4">Repository Configuration</h2>

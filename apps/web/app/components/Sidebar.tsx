@@ -10,13 +10,11 @@ export default function Sidebar() {
   const [recentCommits, setRecentCommits] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('/api/journal/entries')
+    fetch('/api/git/commits')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          // Filter for entries with commit hashes and take top 3
-          const commits = data.filter((e: any) => e.gitCommitHash).slice(0, 3);
-          setRecentCommits(commits);
+          setRecentCommits(data); // Expecting array of { gitCommitHash, content, date, author }
         }
       })
       .catch(err => console.error('Failed to fetch recent commits', err));
@@ -93,11 +91,16 @@ export default function Sidebar() {
         <div className="space-y-2 text-sm">
           {recentCommits.length > 0 ? (
             recentCommits.map((commit, idx) => (
-              <div key={idx} className="text-gray-600 truncate">
-                <span className="font-mono text-xs font-bold mr-1">
-                  {commit.gitCommitHash ? commit.gitCommitHash.substring(0, 7) : '-------'}
+              <div key={idx} className="text-gray-600 truncate flex flex-col mb-2">
+                <div className="flex items-center text-xs">
+                  <span className="font-mono font-bold mr-2 text-blue-600">
+                    {commit.gitCommitHash ? commit.gitCommitHash.substring(0, 7) : '-------'}
+                  </span>
+                  <span className="text-gray-400 text-[10px]">{commit.date ? new Date(commit.date).toLocaleDateString() : ''}</span>
+                </div>
+                <span className="text-xs" title={commit.content}>
+                  {commit.content || 'No description'}
                 </span>
-                - {commit.content ? (commit.content.length > 20 ? commit.content.substring(0, 20) + '...' : commit.content) : 'No description'}
               </div>
             ))
           ) : (

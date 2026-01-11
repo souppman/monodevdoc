@@ -1,42 +1,29 @@
 
 import express, { Request, Response } from 'express';
-import prisma from '../prisma';
-import logger from '../utils/logger';
+import simpleGit from 'simple-git';
+import path from 'path';
+import pino from 'pino';
 
 const router = express.Router();
+const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
-// GET /git/branches
-router.get('/branches', async (req: Request, res: Response) => {
+// Target the monorepo root
+const REPO_ROOT = path.resolve(__dirname, '../../../../');
+const git = simpleGit(REPO_ROOT);
+
+router.get('/commits', async (req: Request, res: Response) => {
     try {
-        const projectId = req.query.projectId as string;
-
-        const where = projectId ? { projectId } : {};
-
-        // Find distinct branches in journal entries
-        const branches = await prisma.journalEntry.findMany({
-            where,
-            distinct: ['gitBranch'],
-            select: {
-                gitBranch: true,
-                updatedAt: true
-            },
-            orderBy: {
-                updatedAt: 'desc'
-            }
-        });
-
-        // Format for frontend
-        const formatted = branches
-            .filter(b => b.gitBranch) // Filter nulls
-            .map(b => ({
-                name: b.gitBranch,
-                lastActivity: b.updatedAt
-            }));
-
-        res.json(formatted);
-    } catch (error) {
-        logger.error({ err: error }, 'Failed to fetch git branches');
-        res.status(500).json({ error: 'Internal Server Error' });
+        const log = await git.log({ maxCount: 10 });
+        const commits = log.all.map(commit => ({
+            gitCommitHash: commit.hash,
+            content: commit.message,
+            date: commit.date,
+            author: commit.author_name
+        }));
+        res.json(commits);
+    } catch (error: any) {
+        logger.error({ err: error.message }, 'Failed to fetch git commits');
+        res.status(500).json({ error: 'Failed to fetch git history' });
     }
 });
 

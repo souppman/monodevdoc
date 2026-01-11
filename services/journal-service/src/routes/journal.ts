@@ -6,6 +6,29 @@ import logger from '../utils/logger';
 const router = express.Router();
 
 // GET /journal/stats
+router.get('/entries', async (req: Request, res: Response) => {
+    try {
+        const { projectId } = req.query;
+        const where: any = {};
+        if (projectId) {
+            where.projectId = String(projectId);
+        }
+
+        const entries = await prisma.journalEntry.findMany({
+            where,
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: 20
+        });
+        res.json(entries);
+    } catch (error) {
+        logger.error({ err: error }, 'Failed to fetch journal entries');
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// GET /journal/stats
 router.get('/stats', async (req: Request, res: Response) => {
     try {
         const totalEntries = await prisma.journalEntry.count();

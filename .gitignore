@@ -26,5 +26,5 @@ __pycache__/
 /services/journal-service/prisma/*.db-journal
 
 #Overview
-!system-overview.md
+system-overview.md
 

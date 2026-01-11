@@ -45,7 +45,9 @@ async def query_documents(request: RAGQueryRequest):
             query=request.query,
             filters=request.filters,
             top_k=request.top_k,
-            model=request.model
+            model=request.model,
+            doc_type=request.doc_type,
+            doc_style=request.doc_style
         )
         
         # Convert LlamaIndex response to our contract
@@ -64,7 +66,7 @@ async def query_documents(request: RAGQueryRequest):
         # but the current RAGQueryResponse only asks for results (context).
         # We will stick to the contract for strict compliance.
         
-        return RAGQueryResponse(results=relevant_context)
+        return RAGQueryResponse(results=relevant_context, answer=str(response))
     except Exception as e:
         logger.error(f"Query failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))

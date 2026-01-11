@@ -7,7 +7,7 @@ export default function Home() {
       <main className="flex flex-col items-center justify-center gap-8 text-center">
         {/* Logo placeholder */}
         <div className="w-40 h-40 flex items-center justify-center">
-          <FileCodeCorner className="w-35 h-35 text-blue-600"/>
+          <FileCodeCorner className="w-35 h-35 text-blue-600" />
         </div>
 
         {/* Main heading */}
@@ -28,10 +28,7 @@ export default function Home() {
           Connect GitHub Repository
         </Link>
 
-        {/* Skip button */}
-        <button className="text-black text-base hover:underline">
-          Skip for now
-        </button>
+
       </main>
     </div>
   );

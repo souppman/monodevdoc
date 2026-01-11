@@ -1,37 +1,59 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function NewJournalEntry() {
   const router = useRouter();
+  const [projectId, setProjectId] = useState('');
+  const [repoUrl, setRepoUrl] = useState('');
+  const [authorId, setAuthorId] = useState('');
+
   const [formData, setFormData] = useState({
     commit: 'abc123f',
     branch: 'feature/auth',
     title: 'Auth implementation decision',
     tags: 'architecture, database, security',
     ticket: '',
-    content: 'Decided to use JWT tokens instead of sessions for authentication to provide better scalability for our distributed architecture and ...',
+    content: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    // In a real app, we might want to validate this against the session again,
+    // but trusting the localStorage cache set by our specific auth flow is sufficient 
+    // for this task to separate "mumbo jumbo" from specific data.
+    const storedProject = localStorage.getItem('current_project_id');
+    const storedRepoUrl = localStorage.getItem('current_repo_url');
+    const storedUser = localStorage.getItem('current_user_login');
+
+    if (storedProject) setProjectId(storedProject);
+    if (storedRepoUrl) setRepoUrl(storedRepoUrl);
+    if (storedUser) setAuthorId(storedUser);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    if (!projectId || !authorId) {
+      alert("Missing context. Please go to GitHub Auth page and select a repository first.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       // Transform form data to match the expected schema
-      // TODO: Get real user/project IDs from auth context
       const payload = {
         content: formData.content,
-        author_id: 'user-test-1',
-        project_id: 'proj-test-1',
+        author_id: authorId, // Real User Login
+        project_id: projectId, // Real Repo Name
         git_context: {
           git_commit_hash: formData.commit,
           git_branch: formData.branch,
-          author_id: 'user-test-1',
-          repo_url: 'https://github.com/souppman/monodevdoc'
+          author_id: authorId,
+          repo_url: repoUrl || `https://github.com/souppman/${projectId}`
         }
       };
 
@@ -69,6 +91,10 @@ export default function NewJournalEntry() {
         </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <div className="bg-blue-50 p-4 rounded text-sm text-blue-800 border border-blue-200">
+            Recording entry for <strong>{projectId}</strong> as <strong>{authorId}</strong>
+          </div>
+
           {/* Attach to context */}
           <div>
             <label className="block text-black font-medium mb-2">

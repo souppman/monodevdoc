@@ -16,15 +16,28 @@ export default function GenerateDocumentation() {
       allEntries: true,
       taggedOnly: true,
     },
-    instructions: 'Focus on microservices architecture and include deployment strategies ...',
+    instructions: '',
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedDoc, setGeneratedDoc] = useState<string | null>(null);
+  const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+  const [generatedSources, setGeneratedSources] = useState<string | null>(null);
+
+  // Moved isSaving up to top level hooks where it belongs
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleGenerate = async () => {
+    const projectId = localStorage.getItem('current_project_id');
+    if (!projectId) {
+      alert('Please connect to a repository first.');
+      return;
+    }
+
+    const docStyle = localStorage.getItem('settings_doc_style') || 'Technical (Default)';
+
     setIsGenerating(true);
-    setGeneratedDoc(null);
+    setGeneratedContent(null);
+    setGeneratedSources(null);
 
     try {
       // Construct a prompt based on form selection
@@ -42,7 +55,9 @@ export default function GenerateDocumentation() {
         },
         body: JSON.stringify({
           query: prompt,
-          project_id: 'proj-test-1', // Hardcoded for now until Auth context is ready
+          doc_type: formData.docType,
+          doc_style: docStyle,
+          project_id: projectId,
           top_k: 5,
         }),
       });
@@ -53,14 +68,47 @@ export default function GenerateDocumentation() {
 
       const data = await res.json();
 
+      setGeneratedContent(data.answer || "No answer generated.");
+
       const snippets = data.results.map((r: any) => `### Source: ${r.metadata?.source || 'Unknown'}\n\n${r.content}`).join('\n\n---\n\n');
-      setGeneratedDoc(snippets || 'No relevant context found.');
+      setGeneratedSources(snippets);
 
     } catch (error) {
       console.error('Error generating docs:', error);
       alert('Failed to generate documentation. Please check console.');
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleSave = async () => {
+    const projectId = localStorage.getItem('current_project_id');
+    if (!projectId || !generatedContent) return;
+
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/docs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: `${formData.docType} - ${new Date().toLocaleString()}`,
+          content: generatedContent,
+          docType: formData.docType,
+          docStyle: localStorage.getItem('settings_doc_style') || 'Default',
+          projectId
+        })
+      });
+
+      if (res.ok) {
+        alert('Documentation saved successfully!');
+      } else {
+        throw new Error('Failed to save');
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      alert('Failed to save documentation.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -116,7 +164,7 @@ export default function GenerateDocumentation() {
                 >
                   {formData.context.currentBranch && <span className="text-white text-sm">✓</span>}
                 </div>
-                <span className="text-black">Current Branch (feature/auth)</span>
+                <span className="text-black">Current Branch {formData.context.currentBranch ? '(Included)' : ''}</span>
               </button>
 
               <button
@@ -226,13 +274,32 @@ export default function GenerateDocumentation() {
       </main>
 
       {/* Result Display */}
-      {generatedDoc && (
+      {generatedContent && (
         <section className="max-w-4xl mx-auto px-8 pb-12">
-          <div className="bg-gray-100 p-8 rounded-lg border border-gray-300">
-            <h2 className="text-2xl font-bold text-black mb-4">Generated Context (RAG Verification)</h2>
-            <div className="prose max-w-none text-black whitespace-pre-wrap">
-              {generatedDoc}
+          <div className="bg-white p-8 rounded-lg border border-gray-300 shadow-sm">
+            <h2 className="text-2xl font-bold text-black mb-6">Generated {formData.docType}</h2>
+            <div className="prose max-w-none text-black whitespace-pre-wrap mb-8">
+              {generatedContent}
             </div>
+
+            <div className="flex justify-end mb-6">
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition-colors disabled:opacity-50"
+              >
+                {isSaving ? 'Saving...' : 'Save to Project'}
+              </button>
+            </div>
+
+            <hr className="my-6 border-gray-200" />
+
+            <details>
+              <summary className="cursor-pointer text-gray-500 font-medium">View Source Context (RAG Verification)</summary>
+              <div className="mt-4 p-4 bg-gray-50 rounded border border-gray-200 text-xs text-gray-600 font-mono whitespace-pre-wrap">
+                {generatedSources || 'No source context available.'}
+              </div>
+            </details>
           </div>
         </section>
       )}

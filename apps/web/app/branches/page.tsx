@@ -4,25 +4,36 @@ import { GitBranch } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 
+
 export default function Branches() {
-    const [branches, setBranches] = useState<{ name: string, lastActivity: string }[]>([]);
+    const [branches, setBranches] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [repoInfo, setRepoInfo] = useState<{ owner: string, repo: string } | null>(null);
 
     useEffect(() => {
-        const projectId = localStorage.getItem('current_project_id');
-        fetch(`/api/git/branches?projectId=${projectId || ''}`)
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    setBranches(data);
-                } else {
-                    console.error('Expected array of branches, got:', data);
+        const repoFullName = localStorage.getItem('current_repo_full_name'); // e.g. "souppman/monodevdoc"
+        if (repoFullName) {
+            const [owner, repo] = repoFullName.split('/');
+            setRepoInfo({ owner, repo });
+
+            fetch(`/api/github/branches?owner=${owner}&repo=${repo}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        setBranches(data);
+                    } else {
+                        console.error('Expected array of branches, got:', data);
+                        setBranches([]);
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to fetch branches', err);
                     setBranches([]);
-                }
-            })
-            .catch(err => {
-                console.error('Failed to fetch branches', err);
-                setBranches([]);
-            });
+                })
+                .finally(() => setLoading(false));
+        } else {
+            setLoading(false);
+        }
     }, []);
 
     return (
@@ -34,8 +45,10 @@ export default function Branches() {
 
             {/* Branch Activity */}
             <main className="px-8 py-6 space-y-4">
-                {branches.length === 0 ? (
-                    <div className="text-gray-500 italic">No branch activity found in your journal for this project.</div>
+                {loading ? (
+                    <div className="text-gray-500">Loading branches...</div>
+                ) : branches.length === 0 ? (
+                    <div className="text-gray-500 italic">No branches found or no repository selected.</div>
                 ) : (
                     branches.map((branch, idx) => (
                         <div key={idx} className="px-8 py-6 border border-gray-200 rounded-lg">
@@ -44,8 +57,10 @@ export default function Branches() {
                                     <GitBranch className="w-5 h-5 text-blue-600" />
                                     <div>
                                         <h3 className="font-semibold text-gray-900">{branch.name}</h3>
+                                        {/* GitHub branches API doesn't return last activity date in the simple list, 
+                                            we would need to fetch commit details. For now, showing name + SHA. */}
                                         <p className="text-xs text-gray-500">
-                                            Last Activity: {new Date(branch.lastActivity).toLocaleString()}
+                                            Commit: {branch.commit?.sha.substring(0, 7)}
                                         </p>
                                     </div>
                                 </div>

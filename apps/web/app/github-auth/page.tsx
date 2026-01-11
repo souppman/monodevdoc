@@ -1,89 +1,224 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-interface Repository {
-  id: number;
-  name: string;
-  branch: string;
-  visibility: 'Main' | 'Private' | 'Public';
-}
-
+import { Github, ArrowRight } from 'lucide-react';
 
 export default function GitHubAuth() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
+  // No preset default value
+  const [repoInput, setRepoInput] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+
+  const [repos, setRepos] = useState<any[]>([]);
+  const [repoLoading, setRepoLoading] = useState(false);
+  const [selectedRepo, setSelectedRepo] = useState<any>(null);
   const router = useRouter();
 
-  // Mock data (replace with real GitHub API fetch later if needed, but for now user just wants functional UI)
-  const repositories: Repository[] = [
-    { id: 1, name: 'monodevdoc', branch: 'Main', visibility: 'Private' }, // Real repo match
-    { id: 2, name: 'repository-two', branch: 'Private', visibility: 'Private' },
-    { id: 3, name: 'repository-three', branch: 'Public', visibility: 'Public' },
-  ];
+  useEffect(() => {
+    checkSession();
+  }, []);
 
-  const filteredRepos = repositories.filter(repo =>
-    repo.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const checkSession = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.authenticated) {
+          setUser(data.user);
+          await fetchRepos(); // Wait for repos
+        } else {
+          setUser(null);
+          setLoading(false);
+        }
+      } else {
+        setUser(null);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Session check failed', error);
+      setLoading(false);
+    }
+  };
 
-  const handleContinue = () => {
-    if (selectedRepo) {
-      // Simple "Auth" - Persist Project ID
-      // In a real app we'd get a session token, but here we just need Context.
-      localStorage.setItem('current_project_id', selectedRepo);
+
+  const fetchRepos = async () => {
+    try {
+      setRepoLoading(true);
+      const res = await fetch('/api/github/repos');
+      if (res.ok) {
+        const data = await res.json();
+        setRepos(data);
+      }
+    } catch (e) {
+      console.error("Failed to fetch repos", e);
+    } finally {
+      setRepoLoading(false);
+      setLoading(false);
+    }
+  };
+
+  const handleLogin = () => {
+    window.location.href = '/api/auth/github';
+  };
+
+  const handleManualConnect = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (repoInput.trim()) {
+      const cleanName = repoInput.replace('https://github.com/', '').split('/').pop() || repoInput;
+      // Basic parsing for full URL to get owner/repo if possible, else just use the input
+      let fullName = cleanName;
+      // If it looks like a full URL, try to extract owner/repo
+      if (repoInput.includes('github.com')) {
+        try {
+          const parts = new URL(repoInput).pathname.split('/').filter(Boolean);
+          if (parts.length >= 2) {
+            fullName = `${parts[0]}/${parts[1]}`;
+          }
+        } catch (e) { }
+      }
+
+      // Set context
+      localStorage.setItem('current_project_id', fullName.split('/').pop() || fullName); // repo name
+      localStorage.setItem('current_repo_full_name', fullName);
+      localStorage.setItem('current_repo_url', repoInput.startsWith('http') ? repoInput : `https://github.com/${fullName}`);
+      // If not logged in, we use a placeholder or previous session user
+      if (!localStorage.getItem('current_user_login')) {
+        // If we have a real user from session, use that even if this is manual
+        if (user) {
+          localStorage.setItem('current_user_login', user.login);
+        } else {
+          localStorage.setItem('current_user_login', 'manual-user');
+        }
+      }
+
       router.push('/dashboard');
     }
   };
 
+  const handleContinue = () => {
+    if (selectedRepo && user) {
+      localStorage.setItem('current_project_id', selectedRepo.name);
+      localStorage.setItem('current_repo_full_name', selectedRepo.full_name);
+      localStorage.setItem('current_repo_url', `https://github.com/${selectedRepo.full_name}`);
+      localStorage.setItem('current_user_login', user.login); // Save for Jounal Entry
+      router.push('/dashboard');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <main className="w-full max-w-md flex flex-col gap-6">
-        <h1 className="text-4xl font-bold text-black text-center">
-          Connect to Github
-        </h1>
-
-        {/* Search input */}
-        <input
-          type="text"
-          placeholder="Search repositories..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded text-base text-gray-500 focus:outline-none focus:border-gray-400"
-        />
-
-        {/* Repository list */}
-        <div className="flex flex-col gap-3">
-          {filteredRepos.map((repo) => (
-            <button
-              key={repo.id}
-              onClick={() => setSelectedRepo(repo.name)}
-              className="w-full px-6 py-4 bg-gray-300 hover:bg-gray-400 transition-colors rounded flex items-center justify-between"
-            >
-              <div className="flex items-center gap-3">
-                <div className={`w-6 h-6 rounded-full border-2 border-black flex items-center justify-center ${selectedRepo === repo.name ? 'bg-black' : 'bg-white'
-                  }`}>
-                  {selectedRepo === repo.name && (
-                    <div className="w-3 h-3 bg-white rounded-full" />
-                  )}
-                </div>
-                <span className="text-black">{repo.name}</span>
-              </div>
-              <span className="text-black">{repo.visibility}</span>
-            </button>
-          ))}
+      <main className="w-full max-w-md flex flex-col gap-8 p-8 bg-white border border-gray-200 rounded-xl shadow-sm">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Github className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            {user ? `Welcome, ${user.login || user.name || 'Developer'}` : 'Connect to GitHub'}
+          </h1>
+          <p className="text-gray-500">
+            {user
+              ? 'Select a repository to link to your journal.'
+              : 'Link your repository to start generating smart documentation.'}
+          </p>
         </div>
 
-        {/* Continue button */}
-        <button
-          onClick={handleContinue}
-          disabled={!selectedRepo}
-          className={`w-full py-3 bg-gray-300 text-black text-center rounded transition-colors ${selectedRepo ? 'hover:bg-gray-400' : 'opacity-50 cursor-not-allowed'
-            }`}
-        >
-          Continue ({selectedRepo ? '1 selected' : '0 selected'})
-        </button>
+        <div className="space-y-6">
+          {!user ? (
+            <>
+              <button
+                onClick={handleLogin}
+                className="w-full py-3 bg-gray-900 hover:bg-black text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+              >
+                Authorize with GitHub
+              </button>
+              <p className="text-xs text-center text-gray-400">
+                Authentication is required to ensure your journal entries are securely scoped to your identity.
+              </p>
+            </>
+          ) : (
+            <div className="space-y-4">
+              {/* Repo List */}
+              <div className="max-h-60 overflow-y-auto border border-gray-200 rounded-lg divide-y divide-gray-100">
+                {repoLoading ? (
+                  <div className="p-4 text-center text-gray-400 text-sm">Loading repositories...</div>
+                ) : repos.length > 0 ? (
+                  repos.map(repo => (
+                    <button
+                      key={repo.id}
+                      onClick={() => setSelectedRepo(repo)}
+                      className={`w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center justify-between transition-colors ${selectedRepo?.id === repo.id ? 'bg-blue-50 hover:bg-blue-50 ring-1 ring-blue-500 z-10' : ''}`}
+                    >
+                      <div className="truncate">
+                        <div className="font-medium text-gray-900 text-sm">{repo.name}</div>
+                        <div className="text-xs text-gray-500">{repo.full_name}</div>
+                      </div>
+                      {repo.private && (
+                        <span className="text-[10px] uppercase font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Private</span>
+                      )}
+                    </button>
+                  ))
+                ) : (
+                  <div className="p-4 text-center text-gray-500 text-sm">No repositories found</div>
+                )}
+              </div>
+
+              <button
+                onClick={handleContinue}
+                disabled={!selectedRepo}
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Connect {selectedRepo ? selectedRepo.name : ''}
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <div className="text-center">
+                <span className="text-xs text-gray-400">Logged in as {user.login || user.name}</span>
+              </div>
+
+              <div className="relative mt-4">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or manually enter different repo</span>
+                </div>
+              </div>
+
+              {/* Manual Input (Authenticated) */}
+              <form onSubmit={handleManualConnect} className="space-y-4 pt-2">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="e.g. https://github.com/google/jax"
+                    value={repoInput}
+                    onChange={(e) => setRepoInput(e.target.value)}
+                    className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={!repoInput.trim()}
+                  className="w-full py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium text-sm transition-colors"
+                >
+                  Connect External Repo
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

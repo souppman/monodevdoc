@@ -2,37 +2,72 @@
 > devdoc-journal-service@1.0.0 dev /Users/ryancampbell/monodevdoc/services/journal-service
 > ts-node src/app.ts
 
-[dotenv@17.2.3] injecting env (5) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
-(node:1192) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+[dotenv@17.2.3] injecting env (4) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+(node:10359) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-[16:43:51.039] INFO (1192): Journal Service running on port 3001
-[16:43:51.039] INFO (1192): Swagger docs available at http://localhost:3001/api-docs
-[16:44:13.875] INFO (1192): request completed
+[14:37:47.528] INFO (10359): Journal Service running on port 3001
+[14:37:47.528] INFO (10359): Swagger docs available at http://localhost:3001/api-docs
+[15:01:07.188] INFO (10359): request completed
     req: {
       "id": 1,
       "method": "GET",
-      "url": "/journal/stats",
+      "url": "/journal/entries",
       "query": {},
       "params": {},
       "headers": {
         "host": "localhost:3001",
-        "user-agent": "curl/8.7.1",
-        "accept": "*/*"
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52399
+      "remotePort": 51442
     }
     res: {
-      "statusCode": 200,
+      "statusCode": 404,
       "headers": {
         "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "50",
-        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
       }
     }
-    responseTime: 622
-[16:48:55.283] INFO (1192): request completed
+    responseTime: 3
+[15:01:07.234] INFO (10359): request completed
+    req: {
+      "id": 3,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51442
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:01:07.818] INFO (10359): request completed
     req: {
       "id": 2,
       "method": "GET",
@@ -47,7 +82,7 @@
         "connection": "keep-alive"
       },
       "remoteAddress": "::1",
-      "remotePort": 52489
+      "remotePort": 51447
     }
     res: {
       "statusCode": 200,
@@ -58,35 +93,8 @@
         "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
       }
     }
-    responseTime: 165
-[16:48:55.423] INFO (1192): request completed
-    req: {
-      "id": 3,
-      "method": "GET",
-      "url": "/journal/stats",
-      "query": {},
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52489
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "50",
-        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
-      }
-    }
-    responseTime: 122
-[16:49:01.458] INFO (1192): request completed
+    responseTime: 603
+[15:01:07.947] INFO (10359): request completed
     req: {
       "id": 4,
       "method": "GET",
@@ -101,7 +109,7 @@
         "connection": "keep-alive"
       },
       "remoteAddress": "::1",
-      "remotePort": 52495
+      "remotePort": 51447
     }
     res: {
       "statusCode": 200,
@@ -113,34 +121,37 @@
       }
     }
     responseTime: 109
-[16:49:01.596] INFO (1192): request completed
+[15:01:20.743] INFO (10359): request completed
     req: {
       "id": 5,
       "method": "GET",
-      "url": "/journal/stats",
+      "url": "/journal/entries",
       "query": {},
       "params": {},
       "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
         "host": "localhost:3001",
-        "connection": "keep-alive"
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52495
+      "remotePort": 51512
     }
     res: {
-      "statusCode": 200,
+      "statusCode": 404,
       "headers": {
         "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "50",
-        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
       }
     }
-    responseTime: 115
-[16:49:03.553] INFO (1192): request completed
+    responseTime: 1
+[15:01:20.750] INFO (10359): request completed
     req: {
       "id": 6,
       "method": "GET",
@@ -157,7 +168,7 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52503
+      "remotePort": 51512
     }
     res: {
       "statusCode": 404,
@@ -170,7 +181,7 @@
       }
     }
     responseTime: 1
-[16:49:03.562] INFO (1192): request completed
+[15:01:20.758] INFO (10359): request completed
     req: {
       "id": 7,
       "method": "GET",
@@ -187,7 +198,7 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52503
+      "remotePort": 51512
     }
     res: {
       "statusCode": 404,
@@ -200,125 +211,9 @@
       }
     }
     responseTime: 1
-[16:49:12.541] INFO (1192): request completed
+[15:01:20.763] INFO (10359): request completed
     req: {
       "id": 8,
-      "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52513
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
-      }
-    }
-    responseTime: 129
-[16:49:12.586] INFO (1192): request completed
-    req: {
-      "id": 9,
-      "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52513
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
-      }
-    }
-    responseTime: 37
-[16:49:14.318] INFO (1192): request completed
-    req: {
-      "id": 10,
-      "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52513
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
-      }
-    }
-    responseTime: 433
-[16:49:14.374] INFO (1192): request completed
-    req: {
-      "id": 11,
-      "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52513
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
-      }
-    }
-    responseTime: 36
-[16:49:14.929] INFO (1192): request completed
-    req: {
-      "id": 12,
       "method": "GET",
       "url": "/journal/entries",
       "query": {},
@@ -333,7 +228,37 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52521
+      "remotePort": 51512
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:01:25.908] INFO (10359): request completed
+    req: {
+      "id": 9,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51542
     }
     res: {
       "statusCode": 404,
@@ -346,7 +271,91 @@
       }
     }
     responseTime: 1
-[16:49:14.938] INFO (1192): request completed
+[15:01:25.916] INFO (10359): request completed
+    req: {
+      "id": 11,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51542
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:01:26.050] INFO (10359): request completed
+    req: {
+      "id": 10,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51543
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 142
+[15:01:26.177] INFO (10359): request completed
+    req: {
+      "id": 12,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51543
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 113
+[15:01:32.422] INFO (10359): request completed
     req: {
       "id": 13,
       "method": "GET",
@@ -363,7 +372,7 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52521
+      "remotePort": 51581
     }
     res: {
       "statusCode": 404,
@@ -376,7 +385,37 @@
       }
     }
     responseTime: 1
-[16:49:52.649] INFO (1192): request completed
+[15:01:32.430] INFO (10359): request completed
+    req: {
+      "id": 15,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51581
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:01:32.532] INFO (10359): request completed
     req: {
       "id": 14,
       "method": "GET",
@@ -391,7 +430,7 @@
         "connection": "keep-alive"
       },
       "remoteAddress": "::1",
-      "remotePort": 52536
+      "remotePort": 51582
     }
     res: {
       "statusCode": 200,
@@ -402,35 +441,8 @@
         "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
       }
     }
-    responseTime: 229
-[16:49:52.791] INFO (1192): request completed
-    req: {
-      "id": 15,
-      "method": "GET",
-      "url": "/journal/stats",
-      "query": {},
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52536
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "50",
-        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
-      }
-    }
-    responseTime: 113
-[16:50:01.363] INFO (1192): request completed
+    responseTime: 110
+[15:01:32.662] INFO (10359): request completed
     req: {
       "id": 16,
       "method": "GET",
@@ -445,7 +457,7 @@
         "connection": "keep-alive"
       },
       "remoteAddress": "::1",
-      "remotePort": 52546
+      "remotePort": 51582
     }
     res: {
       "statusCode": 200,
@@ -456,35 +468,38 @@
         "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
       }
     }
-    responseTime: 113
-[16:50:01.491] INFO (1192): request completed
+    responseTime: 114
+[15:01:33.799] INFO (10359): request completed
     req: {
       "id": 17,
       "method": "GET",
-      "url": "/journal/stats",
+      "url": "/journal/entries",
       "query": {},
       "params": {},
       "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
         "host": "localhost:3001",
-        "connection": "keep-alive"
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52546
+      "remotePort": 51581
     }
     res: {
-      "statusCode": 200,
+      "statusCode": 404,
       "headers": {
         "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "50",
-        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
       }
     }
-    responseTime: 109
-[16:50:02.599] INFO (1192): request completed
+    responseTime: 0
+[15:01:33.807] INFO (10359): request completed
     req: {
       "id": 18,
       "method": "GET",
@@ -501,7 +516,7 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52551
+      "remotePort": 51581
     }
     res: {
       "statusCode": 404,
@@ -514,7 +529,7 @@
       }
     }
     responseTime: 0
-[16:50:02.608] INFO (1192): request completed
+[15:01:36.201] INFO (10359): request completed
     req: {
       "id": 19,
       "method": "GET",
@@ -531,7 +546,37 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52551
+      "remotePort": 51581
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:01:36.232] INFO (10359): request completed
+    req: {
+      "id": 21,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51581
     }
     res: {
       "statusCode": 404,
@@ -544,7 +589,7 @@
       }
     }
     responseTime: 0
-[16:50:06.661] INFO (1192): request completed
+[15:01:36.310] INFO (10359): request completed
     req: {
       "id": 20,
       "method": "GET",
@@ -561,7 +606,7 @@
         "connection": "keep-alive"
       },
       "remoteAddress": "::1",
-      "remotePort": 52557
+      "remotePort": 51582
     }
     res: {
       "statusCode": 200,
@@ -572,37 +617,8 @@
         "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
       }
     }
-    responseTime: 35
-[16:50:06.706] INFO (1192): request completed
-    req: {
-      "id": 21,
-      "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52557
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
-      }
-    }
-    responseTime: 34
-[16:50:19.755] INFO (1192): request completed
+    responseTime: 85
+[15:01:36.359] INFO (10359): request completed
     req: {
       "id": 22,
       "method": "GET",
@@ -619,36 +635,7 @@
         "connection": "keep-alive"
       },
       "remoteAddress": "::1",
-      "remotePort": 52573
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
-      }
-    }
-    responseTime: 200
-[16:50:19.810] INFO (1192): request completed
-    req: {
-      "id": 23,
-      "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52573
+      "remotePort": 51582
     }
     res: {
       "statusCode": 200,
@@ -660,65 +647,97 @@
       }
     }
     responseTime: 37
-[16:50:47.626] INFO (1192): request completed
+[15:01:41.885] INFO (10359): request completed
+    req: {
+      "id": 23,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51642
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:01:41.896] INFO (10359): request completed
     req: {
       "id": 24,
       "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
+      "url": "/journal/entries",
+      "query": {},
       "params": {},
       "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
         "host": "localhost:3001",
-        "connection": "keep-alive"
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52587
+      "remotePort": 51642
     }
     res: {
-      "statusCode": 200,
+      "statusCode": 404,
       "headers": {
         "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
       }
     }
-    responseTime: 74
-[16:50:47.669] INFO (1192): request completed
+    responseTime: 0
+[15:01:43.299] INFO (10359): request completed
     req: {
       "id": 25,
       "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
+      "url": "/journal/entries",
+      "query": {},
       "params": {},
       "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
         "host": "localhost:3001",
-        "connection": "keep-alive"
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52587
+      "remotePort": 51642
     }
     res: {
-      "statusCode": 200,
+      "statusCode": 404,
       "headers": {
         "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
       }
     }
-    responseTime: 34
-[16:50:49.825] INFO (1192): request completed
+    responseTime: 1
+[15:01:43.307] INFO (10359): request completed
     req: {
       "id": 26,
       "method": "GET",
@@ -735,7 +754,7 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52594
+      "remotePort": 51642
     }
     res: {
       "statusCode": 404,
@@ -747,8 +766,8 @@
         "content-length": 154
       }
     }
-    responseTime: 4
-[16:50:49.833] INFO (1192): request completed
+    responseTime: 1
+[15:01:46.168] INFO (10359): request completed
     req: {
       "id": 27,
       "method": "GET",
@@ -765,7 +784,7 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52594
+      "remotePort": 51642
     }
     res: {
       "statusCode": 404,
@@ -778,63 +797,9 @@
       }
     }
     responseTime: 1
-[16:50:51.313] INFO (1192): request completed
-    req: {
-      "id": 28,
-      "method": "GET",
-      "url": "/journal/stats",
-      "query": {},
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52587
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "50",
-        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
-      }
-    }
-    responseTime: 116
-[16:50:51.439] INFO (1192): request completed
+[15:01:46.179] INFO (10359): request completed
     req: {
       "id": 29,
-      "method": "GET",
-      "url": "/journal/stats",
-      "query": {},
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52587
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "50",
-        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
-      }
-    }
-    responseTime: 115
-[16:50:53.076] INFO (1192): request completed
-    req: {
-      "id": 30,
       "method": "GET",
       "url": "/journal/entries",
       "query": {},
@@ -849,7 +814,7 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52605
+      "remotePort": 51642
     }
     res: {
       "statusCode": 404,
@@ -862,7 +827,65 @@
       }
     }
     responseTime: 0
-[16:50:53.089] INFO (1192): request completed
+[15:01:46.247] INFO (10359): request completed
+    req: {
+      "id": 28,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51670
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 73
+[15:01:46.289] INFO (10359): request completed
+    req: {
+      "id": 30,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51670
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 32
+[15:01:47.131] INFO (10359): request completed
     req: {
       "id": 31,
       "method": "GET",
@@ -879,7 +902,37 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52605
+      "remotePort": 51642
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:01:47.143] INFO (10359): request completed
+    req: {
+      "id": 32,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51642
     }
     res: {
       "statusCode": 404,
@@ -892,65 +945,37 @@
       }
     }
     responseTime: 1
-[16:50:55.018] INFO (1192): request completed
-    req: {
-      "id": 32,
-      "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
-      "params": {},
-      "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
-        "host": "localhost:3001",
-        "connection": "keep-alive"
-      },
-      "remoteAddress": "::1",
-      "remotePort": 52587
-    }
-    res: {
-      "statusCode": 200,
-      "headers": {
-        "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
-      }
-    }
-    responseTime: 40
-[16:50:55.066] INFO (1192): request completed
+[15:01:47.762] INFO (10359): request completed
     req: {
       "id": 33,
       "method": "GET",
-      "url": "/git/branches?projectId=monodevdoc",
-      "query": {
-        "projectId": "monodevdoc"
-      },
+      "url": "/journal/entries",
+      "query": {},
       "params": {},
       "headers": {
-        "accept": "application/json, text/plain, */*",
-        "user-agent": "axios/1.13.2",
-        "accept-encoding": "gzip, compress, deflate, br",
         "host": "localhost:3001",
-        "connection": "keep-alive"
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52587
+      "remotePort": 51642
     }
     res: {
-      "statusCode": 200,
+      "statusCode": 404,
       "headers": {
         "x-powered-by": "Express",
-        "content-type": "application/json; charset=utf-8",
-        "content-length": "2",
-        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
       }
     }
-    responseTime: 35
-[16:53:16.425] INFO (1192): request completed
+    responseTime: 1
+[15:01:47.769] INFO (10359): request completed
     req: {
       "id": 34,
       "method": "GET",
@@ -967,7 +992,7 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52666
+      "remotePort": 51642
     }
     res: {
       "statusCode": 404,
@@ -979,8 +1004,8 @@
         "content-length": 154
       }
     }
-    responseTime: 0
-[16:53:16.444] INFO (1192): request completed
+    responseTime: 1
+[15:02:26.471] INFO (10359): request completed
     req: {
       "id": 35,
       "method": "GET",
@@ -997,7 +1022,241 @@
         "accept-encoding": "gzip, deflate"
       },
       "remoteAddress": "::1",
-      "remotePort": 52666
+      "remotePort": 51858
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:02:26.478] INFO (10359): request completed
+    req: {
+      "id": 37,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51858
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:02:26.630] INFO (10359): request completed
+    req: {
+      "id": 36,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51859
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 158
+[15:02:26.765] INFO (10359): request completed
+    req: {
+      "id": 38,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 51859
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 117
+[15:03:24.023] INFO (10359): request completed
+    req: {
+      "id": 39,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52104
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:03:24.033] INFO (10359): request completed
+    req: {
+      "id": 40,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52104
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:03:24.041] INFO (10359): request completed
+    req: {
+      "id": 41,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52104
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:03:24.048] INFO (10359): request completed
+    req: {
+      "id": 42,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52104
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:03:26.507] INFO (10359): request completed
+    req: {
+      "id": 43,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52104
     }
     res: {
       "statusCode": 404,
@@ -1010,3 +1269,3164 @@
       }
     }
     responseTime: 1
+[15:03:26.515] INFO (10359): request completed
+    req: {
+      "id": 44,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52104
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:03:27.236] INFO (10359): request completed
+    req: {
+      "id": 45,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52104
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:03:27.248] INFO (10359): request completed
+    req: {
+      "id": 47,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52104
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:03:27.312] INFO (10359): request completed
+    req: {
+      "id": 46,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52132
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 70
+[15:03:27.354] INFO (10359): request completed
+    req: {
+      "id": 48,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52132
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 32
+[15:04:03.824] INFO (10359): request completed
+    req: {
+      "id": 49,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52293
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:04:03.832] INFO (10359): request completed
+    req: {
+      "id": 50,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52293
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:05:45.949] INFO (10359): request completed
+    req: {
+      "id": 51,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52748
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:05:45.955] INFO (10359): request completed
+    req: {
+      "id": 53,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52748
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:05:46.093] INFO (10359): request completed
+    req: {
+      "id": 52,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52749
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 144
+[15:05:46.219] INFO (10359): request completed
+    req: {
+      "id": 54,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52749
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 110
+[15:05:52.467] INFO (10359): request completed
+    req: {
+      "id": 55,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52786
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:05:52.474] INFO (10359): request completed
+    req: {
+      "id": 56,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52786
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:05:54.097] INFO (10359): request completed
+    req: {
+      "id": 57,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52786
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:05:54.109] INFO (10359): request completed
+    req: {
+      "id": 59,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52786
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:05:54.139] INFO (10359): request completed
+    req: {
+      "id": 58,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52797
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 36
+[15:05:54.177] INFO (10359): request completed
+    req: {
+      "id": 60,
+      "method": "GET",
+      "url": "/git/branches?projectId=monodevdoc",
+      "query": {
+        "projectId": "monodevdoc"
+      },
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52797
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "2",
+        "etag": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+      }
+    }
+    responseTime: 31
+[15:05:54.873] INFO (10359): request completed
+    req: {
+      "id": 61,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52786
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:05:54.881] INFO (10359): request completed
+    req: {
+      "id": 62,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 52786
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:16:57.253] INFO (10359): request completed
+    req: {
+      "id": 63,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55709
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:17:46.872] INFO (10359): request completed
+    req: {
+      "id": 64,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55930
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:17:46.932] INFO (10359): request completed
+    req: {
+      "id": 66,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55930
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:17:47.413] INFO (10359): request completed
+    req: {
+      "id": 65,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55931
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 540
+[15:17:47.551] INFO (10359): request completed
+    req: {
+      "id": 67,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55931
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 112
+[15:17:57.552] INFO (10359): request completed
+    req: {
+      "id": 68,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55982
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:17:57.558] INFO (10359): request completed
+    req: {
+      "id": 69,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55982
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:17:57.567] INFO (10359): request completed
+    req: {
+      "id": 70,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55982
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:17:57.573] INFO (10359): request completed
+    req: {
+      "id": 71,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 55982
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:18:01.391] INFO (10359): request completed
+    req: {
+      "id": 72,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56007
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:18:01.397] INFO (10359): request completed
+    req: {
+      "id": 73,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56007
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:18:18.967] INFO (10359): request completed
+    req: {
+      "id": 74,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56091
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:18:18.974] INFO (10359): request completed
+    req: {
+      "id": 75,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56091
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:18:38.553] INFO (10359): request completed
+    req: {
+      "id": 76,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56183
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:18:38.559] INFO (10359): request completed
+    req: {
+      "id": 77,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56183
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:18:41.431] INFO (10359): request completed
+    req: {
+      "id": 78,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56183
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:18:41.443] INFO (10359): request completed
+    req: {
+      "id": 79,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56183
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:39.454] INFO (10359): request completed
+    req: {
+      "id": 80,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56456
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:19:39.465] INFO (10359): request completed
+    req: {
+      "id": 82,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56456
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:19:39.620] INFO (10359): request completed
+    req: {
+      "id": 81,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56457
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 160
+[15:19:39.759] INFO (10359): request completed
+    req: {
+      "id": 83,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56457
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 120
+[15:19:41.294] INFO (10359): request completed
+    req: {
+      "id": 84,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56456
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:41.302] INFO (10359): request completed
+    req: {
+      "id": 85,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56456
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:41.309] INFO (10359): request completed
+    req: {
+      "id": 86,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56456
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:41.316] INFO (10359): request completed
+    req: {
+      "id": 87,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56456
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:42.387] INFO (10359): request completed
+    req: {
+      "id": 88,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56456
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:42.396] INFO (10359): request completed
+    req: {
+      "id": 89,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56456
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:19:56.697] INFO (10359): request completed
+    req: {
+      "id": 90,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:19:56.704] INFO (10359): request completed
+    req: {
+      "id": 91,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:56.711] INFO (10359): request completed
+    req: {
+      "id": 92,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:56.718] INFO (10359): request completed
+    req: {
+      "id": 93,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:58.159] INFO (10359): request completed
+    req: {
+      "id": 94,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:58.170] INFO (10359): request completed
+    req: {
+      "id": 96,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:19:58.315] INFO (10359): request completed
+    req: {
+      "id": 95,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56570
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 151
+[15:19:58.451] INFO (10359): request completed
+    req: {
+      "id": 97,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56570
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 116
+[15:20:00.668] INFO (10359): request completed
+    req: {
+      "id": 98,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:20:00.675] INFO (10359): request completed
+    req: {
+      "id": 99,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:00.684] INFO (10359): request completed
+    req: {
+      "id": 100,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:00.694] INFO (10359): request completed
+    req: {
+      "id": 101,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:20:01.090] INFO (10359): request completed
+    req: {
+      "id": 102,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:20:01.097] INFO (10359): request completed
+    req: {
+      "id": 103,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:01.903] INFO (10359): request completed
+    req: {
+      "id": 104,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:01.913] INFO (10359): request completed
+    req: {
+      "id": 105,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56550
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:09.892] INFO (10359): request completed
+    req: {
+      "id": 106,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56645
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:09.900] INFO (10359): request completed
+    req: {
+      "id": 107,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56645
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:10.581] INFO (10359): request completed
+    req: {
+      "id": 108,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56645
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:10.591] INFO (10359): request completed
+    req: {
+      "id": 109,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56645
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:51.133] INFO (10359): request completed
+    req: {
+      "id": 110,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:51.140] INFO (10359): request completed
+    req: {
+      "id": 112,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:51.278] INFO (10359): request completed
+    req: {
+      "id": 111,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56832
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 144
+[15:20:51.403] INFO (10359): request completed
+    req: {
+      "id": 113,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56832
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 110
+[15:20:52.871] INFO (10359): request completed
+    req: {
+      "id": 114,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:52.880] INFO (10359): request completed
+    req: {
+      "id": 115,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:52.887] INFO (10359): request completed
+    req: {
+      "id": 116,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:52.894] INFO (10359): request completed
+    req: {
+      "id": 117,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:20:53.624] INFO (10359): request completed
+    req: {
+      "id": 118,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:53.633] INFO (10359): request completed
+    req: {
+      "id": 119,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:20:54.390] INFO (10359): request completed
+    req: {
+      "id": 120,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:20:54.403] INFO (10359): request completed
+    req: {
+      "id": 121,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56831
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:21:01.982] INFO (10359): request completed
+    req: {
+      "id": 122,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56911
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:21:01.991] INFO (10359): request completed
+    req: {
+      "id": 123,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 56911
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:31:22.739] INFO (10359): request completed
+    req: {
+      "id": 124,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 59590
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:31:22.749] INFO (10359): request completed
+    req: {
+      "id": 125,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 59590
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:31:51.851] INFO (10359): request completed
+    req: {
+      "id": 126,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 59726
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:31:51.858] INFO (10359): request completed
+    req: {
+      "id": 127,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 59726
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:35:03.403] INFO (10359): request completed
+    req: {
+      "id": 128,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 60574
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:35:03.411] INFO (10359): request completed
+    req: {
+      "id": 129,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 60574
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:35:08.179] INFO (10359): request completed
+    req: {
+      "id": 130,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 60600
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:35:08.184] INFO (10359): request completed
+    req: {
+      "id": 131,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 60600
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:35:27.250] INFO (10359): request completed
+    req: {
+      "id": 132,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 60686
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:35:27.258] INFO (10359): request completed
+    req: {
+      "id": 133,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 60686
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:35:34.814] INFO (10359): request completed
+    req: {
+      "id": 134,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 60728
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:35:34.819] INFO (10359): request completed
+    req: {
+      "id": 135,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 60728
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:37:33.186] INFO (10359): request completed
+    req: {
+      "id": 136,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 61273
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:38:15.237] INFO (10359): request completed
+    req: {
+      "id": 137,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 61480
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 3
+[15:43:57.086] INFO (10359): request completed
+    req: {
+      "id": 138,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 63010
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:44:03.548] INFO (10359): request completed
+    req: {
+      "id": 139,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 63049
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:44:03.556] INFO (10359): request completed
+    req: {
+      "id": 141,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 63049
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 1
+[15:44:04.115] INFO (10359): request completed
+    req: {
+      "id": 140,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 63050
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 567
+[15:44:04.250] INFO (10359): request completed
+    req: {
+      "id": 142,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 63050
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 110
+[15:44:06.915] INFO (10359): request completed
+    req: {
+      "id": 143,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 63074
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:44:07.030] INFO (10359): request completed
+    req: {
+      "id": 144,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "localhost:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 63050
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 113
+[15:45:05.807] INFO (10359): request completed
+    req: {
+      "id": 145,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "127.0.0.1:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::ffff:127.0.0.1",
+      "remotePort": 63367
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:45:05.954] INFO (10359): request completed
+    req: {
+      "id": 146,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "127.0.0.1:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::ffff:127.0.0.1",
+      "remotePort": 63368
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 147
+[15:46:05.813] INFO (10359): request completed
+    req: {
+      "id": 147,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "127.0.0.1:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::ffff:127.0.0.1",
+      "remotePort": 63637
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:46:05.975] INFO (10359): request completed
+    req: {
+      "id": 148,
+      "method": "GET",
+      "url": "/journal/stats",
+      "query": {},
+      "params": {},
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "user-agent": "axios/1.13.2",
+        "accept-encoding": "gzip, compress, deflate, br",
+        "host": "127.0.0.1:3001",
+        "connection": "keep-alive"
+      },
+      "remoteAddress": "::ffff:127.0.0.1",
+      "remotePort": 63638
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "50",
+        "etag": "W/\"32-7m2D7bma5tjTf9bSAzN9jzL3Cpg\""
+      }
+    }
+    responseTime: 148
+[15:46:14.224] INFO (10359): request completed
+    req: {
+      "id": 149,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "127.0.0.1:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::ffff:127.0.0.1",
+      "remotePort": 63685
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0
+[15:46:14.231] INFO (10359): request completed
+    req: {
+      "id": 150,
+      "method": "GET",
+      "url": "/journal/entries",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "127.0.0.1:3001",
+        "connection": "keep-alive",
+        "accept": "*/*",
+        "accept-language": "*",
+        "sec-fetch-mode": "cors",
+        "user-agent": "node",
+        "accept-encoding": "gzip, deflate"
+      },
+      "remoteAddress": "::ffff:127.0.0.1",
+      "remotePort": 63685
+    }
+    res: {
+      "statusCode": 404,
+      "headers": {
+        "x-powered-by": "Express",
+        "content-security-policy": "default-src 'none'",
+        "x-content-type-options": "nosniff",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": 154
+      }
+    }
+    responseTime: 0

@@ -32,6 +32,33 @@ export const createJournalEntry = async (input: JournalEntryInput) => {
     try {
 
 
+        // Ensure User and Project exist (Lazy Sync)
+        // This is crucial because Auth is handled by BFF (Stateless), so the DB might not know this User/Project yet.
+
+        // 1. Upsert User (Author)
+        // We use the GitHub Login as the ID for simplicity and stability across sessions.
+        await prisma.user.upsert({
+            where: { id: input.author_id },
+            update: {},
+            create: {
+                id: input.author_id,
+                email: `${input.author_id}@github.placeholder`, // unique requirement
+                name: input.author_id,
+            }
+        });
+
+        // 2. Upsert Project
+        await prisma.project.upsert({
+            where: { id: input.project_id },
+            update: {},
+            create: {
+                id: input.project_id,
+                name: input.project_id,
+                repoUrl: input.git_context.repo_url,
+                ownerId: input.author_id,
+            }
+        });
+
         savedEntry = await prisma.journalEntry.create({
             data: {
                 id: input.id || undefined,

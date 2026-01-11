@@ -64,25 +64,22 @@ export default function DocumentEditor() {
         <div className="px-8 py-4 bg-gray-200 flex gap-6">
           <button
             onClick={() => setActiveTab('edit')}
-            className={`px-4 py-2 rounded transition-colors ${
-              activeTab === 'edit' ? 'bg-gray-400 text-black' : 'bg-transparent text-black hover:bg-gray-300'
-            }`}
+            className={`px-4 py-2 rounded transition-colors ${activeTab === 'edit' ? 'bg-gray-400 text-black' : 'bg-transparent text-black hover:bg-gray-300'
+              }`}
           >
             Edit
           </button>
           <button
             onClick={() => setActiveTab('preview')}
-            className={`px-4 py-2 rounded transition-colors ${
-              activeTab === 'preview' ? 'bg-gray-400 text-black' : 'bg-transparent text-black hover:bg-gray-300'
-            }`}
+            className={`px-4 py-2 rounded transition-colors ${activeTab === 'preview' ? 'bg-gray-400 text-black' : 'bg-transparent text-black hover:bg-gray-300'
+              }`}
           >
             Preview
           </button>
           <button
             onClick={() => setActiveTab('history')}
-            className={`px-4 py-2 rounded transition-colors ${
-              activeTab === 'history' ? 'bg-gray-400 text-black' : 'bg-transparent text-black hover:bg-gray-300'
-            }`}
+            className={`px-4 py-2 rounded transition-colors ${activeTab === 'history' ? 'bg-gray-400 text-black' : 'bg-transparent text-black hover:bg-gray-300'
+              }`}
           >
             History
           </button>
@@ -120,7 +117,7 @@ export default function DocumentEditor() {
                 Journal Note • commit abc123f • feature/auth
               </p>
               <p className="text-black">
-                "Decided to use JWT tokens instead of sessions ..."
+                "Write your journal entry here..."
               </p>
             </div>
 

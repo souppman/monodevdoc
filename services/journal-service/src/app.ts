@@ -71,19 +71,28 @@ const verifyGitHubSignature = (req: any, res: Response, next: NextFunction) => {
 import webhookRouter from './routes/webhooks';
 import journalRouter from './routes/journal';
 import gitRouter from './routes/git';
+import docsRouter from './routes/docs';
 
 app.use('/webhooks', verifyGitHubSignature, webhookRouter);
 app.use('/journal', journalRouter);
 app.use('/git', gitRouter);
+app.use('/docs', docsRouter);
 
 app.get('/', (req: Request, res: Response) => {
     res.redirect('/api-docs');
 });
 
 const PORT = process.env.PORT || 3000;
+import { fileWatcher } from './services/fileWatcher';
+
 app.listen(PORT, () => {
     logger.info(`Journal Service running on port ${PORT}`);
     logger.info(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+
+    // Start File Watcher for Dev Mode
+    if (process.env.NODE_ENV !== 'production') {
+        fileWatcher.start();
+    }
 });
 
 export default app;

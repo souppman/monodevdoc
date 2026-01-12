@@ -2,6 +2,8 @@
 FROM node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+# Increase Node.js memory limit to prevents OOM during build/runtime (Railway 2GB limit often hit)
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN corepack enable
 
 # Build Stage

@@ -4,7 +4,10 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   async rewrites() {
-    const bffUrl = process.env.BFF_URL || 'http://localhost:4000';
+    let bffUrl = process.env.BFF_URL || 'http://localhost:4000';
+    if (bffUrl !== 'http://localhost:4000' && !bffUrl.startsWith('http')) {
+      bffUrl = `https://${bffUrl}`;
+    }
     return [
       {
         source: '/api/:path*',

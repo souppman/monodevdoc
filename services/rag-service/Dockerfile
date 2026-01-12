@@ -14,6 +14,8 @@ COPY packages/contracts /app/packages/contracts
 COPY services/rag-service/requirements.txt /app/services/rag-service/requirements.txt
 
 # Install Python dependencies
+# Optimize PyTorch installation (CPU only) to prevent massive downloads/compilation hangs
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r services/rag-service/requirements.txt
 
 # Install local contracts package in editable mode or standard

@@ -1,5 +1,6 @@
 
 import express, { Request, Response } from 'express';
+import { Project } from '@prisma/client';
 import prisma from '../prisma';
 import logger from '../utils/logger';
 
@@ -14,7 +15,7 @@ router.get('/lookup', async (req: Request, res: Response) => {
         }
 
         const projects = await prisma.project.findMany();
-        const found = projects.find(p => p.repoUrl && p.repoUrl.includes(String(repoUrl)));
+        const found = projects.find((p: Project) => p.repoUrl && p.repoUrl.includes(String(repoUrl)));
 
         if (!found) {
             return res.status(404).json({ error: 'Project not found for repository' });
@@ -52,7 +53,7 @@ router.post('/', async (req: Request, res: Response) => {
                 email: `${ownerId}@github.placeholder`, // Fallback
                 name: ownerId
             }
-        }).catch(err => {
+        }).catch((err: any) => {
             // Soft ignore if email conflict, but user might already exist
             logger.warn({ err }, 'User upsert warning');
         });

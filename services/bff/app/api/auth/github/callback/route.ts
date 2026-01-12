@@ -73,7 +73,8 @@ export async function GET(request: NextRequest) {
         });
 
         // 5. Redirect to Frontend
-        const response = NextResponse.redirect(new URL('http://localhost:3000/github-auth', request.url));
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+        const response = NextResponse.redirect(new URL(`${frontendUrl}/github-auth`, request.url));
         response.headers.append('Set-Cookie', cookie);
 
         return response;

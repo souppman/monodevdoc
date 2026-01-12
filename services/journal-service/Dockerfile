@@ -46,7 +46,13 @@ COPY --from=build /usr/src/app/services/journal-service/prisma /app/prisma
 # Regenerate Prisma Client in production image to ensure it matches the environment
 # We need the dummy ENV again for validation during generation
 ENV DATABASE_URL="postgresql://build-dummy:5432/build-db"
-RUN npx prisma generate
+
+# Remove prisma.config.ts to avoid "Cannot find module 'prisma/config'" error
+# (The 'prisma' package is a devDep and not present in prod image)
+RUN rm -f prisma.config.ts
+
+# Use strict version matching package.json to avoid v7 breaking changes
+RUN npx prisma@6.19.1 generate
 
 EXPOSE 3000
 CMD [ "node", "dist/app.js" ]

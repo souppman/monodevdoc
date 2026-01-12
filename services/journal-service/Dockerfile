@@ -9,8 +9,15 @@ FROM base AS build
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 
+# Install system dependencies (Prisma requires openssl)
+RUN apt-get update -y && apt-get install -y openssl
+
 # Install dependencies
 RUN pnpm install --frozen-lockfile
+
+# Fix for Prisma Generate requiring DATABASE_URL
+# This is a dummy URL just for the build process validation
+ENV DATABASE_URL="postgresql://build-dummy:5432/build-db"
 
 # Build Workspace Packages
 RUN pnpm --filter devdoc-contracts build

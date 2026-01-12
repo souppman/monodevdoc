@@ -14,9 +14,16 @@ COPY packages/contracts /app/packages/contracts
 COPY services/rag-service/requirements.txt /app/services/rag-service/requirements.txt
 
 # Install Python dependencies
-# Optimize PyTorch installation (CPU only) to prevent massive downloads/compilation hangs
+# 1. Upgrade build tools to prevent source compilation hangs of libraries like tokenizers
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# 2. Optimize PyTorch installation (CPU only)
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-RUN pip install --no-cache-dir -r services/rag-service/requirements.txt
+
+# 3. Install requirements with --prefer-binary to ensure we use pre-built wheels
+# This drastically speeds up build times and prevents compilation errors
+ENV PIP_DEFAULT_TIMEOUT=100
+RUN pip install --no-cache-dir --prefer-binary -r services/rag-service/requirements.txt
 
 # Install local contracts package in editable mode or standard
 RUN pip install --no-cache-dir -e ./packages/contracts

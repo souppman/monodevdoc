@@ -31,14 +31,22 @@ RUN pnpm --filter devdoc-journal-service deploy --prod /prod/journal-service
 FROM base AS journal-service
 WORKDIR /app
 
+# Install system dependencies (Prisma requires openssl at runtime)
+RUN apt-get update -y && apt-get install -y openssl
+
 # Copy production dependencies and package config from deploy stage
 COPY --from=build /prod/journal-service /app
 
-# Copy built artifacts (dist) explicitly as they might not be included in 'deploy' if not in 'files'
+# Copy built artifacts (dist) explicitly
 COPY --from=build /usr/src/app/services/journal-service/dist /app/dist
 
-# Copy Prisma schema for runtime needs (if any)
+# Copy Prisma schema for runtime needs
 COPY --from=build /usr/src/app/services/journal-service/prisma /app/prisma
+
+# Regenerate Prisma Client in production image to ensure it matches the environment
+# We need the dummy ENV again for validation during generation
+ENV DATABASE_URL="postgresql://build-dummy:5432/build-db"
+RUN npx prisma generate
 
 EXPOSE 3000
 CMD [ "node", "dist/app.js" ]

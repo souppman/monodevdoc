@@ -23,8 +23,8 @@ export default function GenerateDocumentation() {
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
   const [generatedSources, setGeneratedSources] = useState<string | null>(null);
 
-  // Moved isSaving up to top level hooks where it belongs
   const [isSaving, setIsSaving] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const handleGenerate = async () => {
     const projectId = localStorage.getItem('current_project_id');
@@ -48,10 +48,22 @@ export default function GenerateDocumentation() {
         Additional Instructions: ${formData.instructions}
       `;
 
+      // Get settings from local storage
+      const apiKey = localStorage.getItem('settings_openrouter_key');
+      const aiModel = localStorage.getItem('settings_ai_model');
+
+      if (!apiKey) {
+        alert('Please set your OpenRouter API Key in Settings.');
+        setIsGenerating(false);
+        return;
+      }
+
       const res = await fetch('/api/rag/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-OpenRouter-Key': apiKey,
+          'X-OpenRouter-Model': aiModel || 'openai/gpt-4o-mini',
         },
         body: JSON.stringify({
           query: prompt,
@@ -82,8 +94,28 @@ export default function GenerateDocumentation() {
   };
 
   const handleSave = async () => {
-    const projectId = localStorage.getItem('current_project_id');
-    if (!projectId || !generatedContent) return;
+    // Deterministically resolve Project ID from Repo Name if possible
+    let projectId = localStorage.getItem('current_project_id');
+    const repoFullName = localStorage.getItem('current_repo_full_name');
+
+    if (repoFullName) {
+      try {
+        const lookupRes = await fetch(`/api/projects/lookup?repoUrl=${repoFullName}`);
+        if (lookupRes.ok) {
+          const projectData = await lookupRes.json();
+          projectId = projectData.id;
+          // Sync local storage to be correct
+          localStorage.setItem('current_project_id', projectData.id);
+        }
+      } catch (e) {
+        console.warn('Failed to resolve project by repo name, falling back to stored ID', e);
+      }
+    }
+
+    if (!projectId || !generatedContent) {
+      if (!projectId) alert('No project connected. Please configure a repository in Settings.');
+      return;
+    }
 
     setIsSaving(true);
     try {
@@ -102,7 +134,8 @@ export default function GenerateDocumentation() {
       if (res.ok) {
         alert('Documentation saved successfully!');
       } else {
-        throw new Error('Failed to save');
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to save');
       }
     } catch (error) {
       console.error('Save error:', error);
@@ -111,6 +144,37 @@ export default function GenerateDocumentation() {
       setIsSaving(false);
     }
   };
+
+  const handleExport = async () => {
+    if (!generatedContent) return;
+    setIsExporting(true);
+    try {
+      const filename = `${formData.docType.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.md`;
+      const res = await fetch('/api/rag/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: generatedContent,
+          filename: filename
+        })
+      });
+
+      if (!res.ok) throw new Error('Export failed');
+
+      const data = await res.json();
+      if (data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        alert('Export succeeded but no URL returned.');
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+      alert('Failed to export.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
 
   return (
     <div className="flex-1 bg-white">
@@ -283,6 +347,14 @@ export default function GenerateDocumentation() {
             </div>
 
             <div className="flex justify-end mb-6">
+              <button
+                onClick={handleExport}
+                disabled={isExporting}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors disabled:opacity-50 mr-4"
+              >
+                {isExporting ? 'Exporting...' : 'Export to S3'}
+              </button>
+
               <button
                 onClick={handleSave}
                 disabled={isSaving}

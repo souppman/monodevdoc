@@ -9,10 +9,10 @@ const router = express.Router();
 router.get('/entries', async (req: Request, res: Response) => {
     try {
         const { projectId } = req.query;
-        const where: any = {};
-        if (projectId) {
-            where.projectId = String(projectId);
+        if (!projectId) {
+            return res.status(400).json({ error: 'Missing projectId query parameter' });
         }
+        const where: any = { projectId: String(projectId) };
 
         const entries = await prisma.journalEntry.findMany({
             where,
@@ -31,29 +31,61 @@ router.get('/entries', async (req: Request, res: Response) => {
 // GET /journal/stats
 router.get('/stats', async (req: Request, res: Response) => {
     try {
-        const totalEntries = await prisma.journalEntry.count();
-        const distinctDocs = await prisma.project.count(); // Using projects as proxy for "Docs" for now, or just hardcode/count something else if needed. 
-        // Plan said: "Documents" (12 in mock).
-        // Check schema. Project has entries. 
-        // Ideally "Documents" are what we generate. We don't have a "Document" model yet, maybe RAG knows? 
-        // For now, let's just return what we have: Journal Entries, and maybe Projects.
+        const { projectId } = req.query;
+        if (!projectId) {
+            return res.status(400).json({ error: 'Missing projectId query parameter' });
+        }
+        const whereArgs = { projectId: String(projectId) };
 
-        // Actually, looking at the mock: "12 Documents", "47 Journal Entries", "8 AI Generated".
-        // We can count JournalEntries.
-        // We can count Projects.
-        // We don't have "Generated Docs" stored in Postgres yet (they are in RAG/Markdown files?). 
-        // Let's just return counts we can get.
+        const totalEntries = await prisma.journalEntry.count({
+            where: whereArgs
+        });
+
+        // Count actual GeneratedDocs for this project
+        const totalDocs = await prisma.generatedDoc.count({
+            where: whereArgs
+        });
 
         const stats = {
-            documents: await prisma.project.count(), // Mapping Projects -> Documents concept for Dashboard
+            documents: totalDocs,
             journalEntries: totalEntries,
-            aiGenerated: 0 // Placeholder until we track this
+            aiGenerated: totalDocs // Assuming all docs are AI generated for now
         };
 
         res.json(stats);
     } catch (error) {
         logger.error({ err: error }, 'Failed to fetch journal stats');
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+
+// POST /journal/entries
+router.post('/entries', async (req: Request, res: Response) => {
+    try {
+        logger.info({ body: req.body }, 'Received POST /entries request');
+        const { projectId, authorId, content, gitCommitHash, gitBranch } = req.body;
+
+        if (!projectId || !authorId || !content) {
+            logger.warn({ projectId, authorId, hasContent: !!content }, 'Missing required fields');
+            return res.status(400).json({ error: 'Missing required fields: projectId, authorId, content' });
+        }
+
+        const entry = await prisma.journalEntry.create({
+            data: {
+                projectId,
+                authorId,
+                content,
+                gitCommitHash: gitCommitHash || undefined,
+                gitBranch: gitBranch || undefined,
+            }
+        });
+
+        res.status(201).json(entry);
+    } catch (error: any) {
+        logger.error({ err: error.message }, 'Failed to create journal entry');
+        res.status(500).json({ error: 'Failed to create entry' });
     }
 });
 

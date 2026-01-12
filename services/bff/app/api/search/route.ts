@@ -7,7 +7,7 @@ const RAG_SERVICE_URL = process.env.RAG_SERVICE_URL || 'http://localhost:8000';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        console.log('[BFF] Proxying request to RAG Service: POST /query', body);
+
 
         const response = await axios.post(`${RAG_SERVICE_URL}/query`, body);
         return NextResponse.json(response.data);

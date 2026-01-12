@@ -72,11 +72,13 @@ import webhookRouter from './routes/webhooks';
 import journalRouter from './routes/journal';
 import gitRouter from './routes/git';
 import docsRouter from './routes/docs';
+import projectsRouter from './routes/projects';
 
 app.use('/webhooks', verifyGitHubSignature, webhookRouter);
 app.use('/journal', journalRouter);
 app.use('/git', gitRouter);
 app.use('/docs', docsRouter);
+app.use('/projects', projectsRouter);
 
 app.get('/', (req: Request, res: Response) => {
     res.redirect('/api-docs');

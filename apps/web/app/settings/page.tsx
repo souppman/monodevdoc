@@ -1,13 +1,16 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Github, Zap, TreePine, Slack, SquareKanban, Download } from 'lucide-react';
 
 
 export default function Settings() {
+    const router = useRouter();
     const [repoName, setRepoName] = useState('Loading...');
     const [aiModel, setAiModel] = useState('openai/gpt-4o-mini');
     const [openRouterKey, setOpenRouterKey] = useState('');
     const [docStyle, setDocStyle] = useState('Technical (Default)');
+    const [isExporting, setIsExporting] = useState(false);
 
     const [branches, setBranches] = useState<string[]>([]);
 
@@ -15,7 +18,9 @@ export default function Settings() {
         const storedRepo = localStorage.getItem('current_project_id');
         const repoFullName = localStorage.getItem('current_repo_full_name');
 
-        if (storedRepo) {
+        if (repoFullName) {
+            setRepoName(`github.com/${repoFullName}`);
+        } else if (storedRepo) {
             setRepoName(`github.com/souppman/${storedRepo}`);
         } else {
             setRepoName('No repository connected');
@@ -44,11 +49,68 @@ export default function Settings() {
         if (storedStyle) setDocStyle(storedStyle);
     }, []);
 
+    const handleChangeProject = () => {
+        // Redirect to GitHub Auth page to select a different repository
+        router.push('/github-auth');
+    };
+
     const handleSave = () => {
         localStorage.setItem('settings_ai_model', aiModel);
         localStorage.setItem('settings_openrouter_key', openRouterKey);
         localStorage.setItem('settings_doc_style', docStyle);
         alert('Settings saved successfully!');
+    };
+
+    const handleExport = async () => {
+        const storedRepo = localStorage.getItem('current_project_id');
+        if (!storedRepo) {
+            alert('No project connected to export.');
+            return;
+        }
+
+        setIsExporting(true);
+        try {
+            // Fetch all entries for this project
+            const res = await fetch(`/api/journal/entries?projectId=${encodeURIComponent(storedRepo)}`);
+            if (!res.ok) throw new Error('Failed to fetch entries');
+
+            const entries = await res.json();
+
+            if (!Array.isArray(entries) || entries.length === 0) {
+                alert('No journal entries found to export.');
+                setIsExporting(false);
+                return;
+            }
+
+            // Build Markdown Content
+            let mdContent = `# Developer Journal Export\nProject: ${storedRepo}\nExported: ${new Date().toLocaleString()}\n\n---\n\n`;
+
+            entries.forEach((entry: any) => {
+                const date = new Date(entry.createdAt).toLocaleString();
+                mdContent += `## ${date}\n\n`;
+                if (entry.gitCommitHash) mdContent += `**Commit:** \`${entry.gitCommitHash}\`\n\n`;
+                if (entry.gitBranch) mdContent += `**Branch:** \`${entry.gitBranch}\`\n\n`;
+                if (entry.content) mdContent += `${entry.content}\n\n`;
+                mdContent += `---\n\n`;
+            });
+
+            // Trigger Download
+            const blob = new Blob([mdContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `devdoc-${storedRepo}-export.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+        } catch (error) {
+            console.error('Export failed:', error);
+            alert('Failed to export documentation.');
+        } finally {
+            setIsExporting(false);
+        }
     };
 
     return (
@@ -76,7 +138,10 @@ export default function Settings() {
                                     value={repoName}
                                     readOnly
                                 />
-                                <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                <button
+                                    onClick={handleChangeProject}
+                                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                                >
                                     Change
                                 </button>
                             </div>
@@ -157,49 +222,18 @@ export default function Settings() {
                     </div>
                 </div>
 
-                {/* Integrations */}
+                {/* Export - Local Download Only */}
                 <div className="px-8 py-6 border border-gray-200 rounded-lg">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Integrations</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Export</h2>
                     <div className="space-y-3">
-
-                        {/* GitHub */}
-                        <div className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
-                                    <Github className="w-5 h-5 text-white" />
-                                </div>
-                                <div>
-                                    <div className="font-medium text-gray-900">GitHub</div>
-                                    <div className="text-sm text-gray-500">Connected to Repository</div>
-                                </div>
-                            </div>
-                            <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">Connected</span>
-                        </div>
-
-                        {/* Supabase */}
-                        <div className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-green-400 rounded-lg flex items-center justify-center">
-                                    <Zap className="w-5 h-5 text-white" />
-                                </div>
-                                <div>
-                                    <div className="font-medium text-gray-900">Supabase</div>
-                                    <div className="text-sm text-gray-500">Database & auth</div>
-                                </div>
-                            </div>
-                            <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">Connected</span>
-                        </div>
-
-                        {/* Other placeholders removed as per user request to remove fake data */}
-                    </div>
-                </div>
-
-                {/* Export & Backup */}
-                <div className="px-8 py-6 border border-gray-200 rounded-lg">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Export & Backup</h2>
-                    <div className="space-y-3">
-                        <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center justify-between">
-                            <span>Export all documentation as Markdown</span>
+                        <button
+                            onClick={handleExport}
+                            disabled={isExporting}
+                            className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center justify-between transition-colors disabled:opacity-50"
+                        >
+                            <span>
+                                {isExporting ? 'Generating Markdown...' : 'Export all documentation as Markdown'}
+                            </span>
                             <Download className="w-4 h-4" />
                         </button>
                     </div>

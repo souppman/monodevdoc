@@ -1,4 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
+from typing import Optional
+from pydantic import BaseModel
 from devdoc_contracts import RAGIndexRequest
 from app.schemas import RAGQueryRequest, RAGQueryResponse, RelevantContext
 from app.config import settings
@@ -34,20 +36,29 @@ async def index_document(request: RAGIndexRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/query", response_model=RAGQueryResponse)
-async def query_documents(request: RAGQueryRequest):
+async def query_documents(
+    request: RAGQueryRequest,
+    x_openrouter_key: Optional[str] = Header(None, alias="X-OpenRouter-Key"),
+    x_openrouter_model: Optional[str] = Header(None, alias="X-OpenRouter-Model")
+):
     """
     Accepts a RAGQueryRequest.
     Retrieves context and generates answer via DeepSeek.
     """
     logger.info(f"Received query: {request.query}")
     try:
+        # Use header model if present, otherwise fallback to request body model
+        model_to_use = x_openrouter_model if x_openrouter_model else request.model
+
         response = rag_service.query_request(
             query=request.query,
+            project_id=request.project_id,
             filters=request.filters,
             top_k=request.top_k,
-            model=request.model,
+            model=model_to_use,
             doc_type=request.doc_type,
-            doc_style=request.doc_style
+            doc_style=request.doc_style,
+            api_key=x_openrouter_key
         )
         
         # Convert LlamaIndex response to our contract
@@ -69,6 +80,24 @@ async def query_documents(request: RAGQueryRequest):
         return RAGQueryResponse(results=relevant_context, answer=str(response))
     except Exception as e:
         logger.error(f"Query failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+class ExportRequest(BaseModel):
+    content: str
+    filename: str
+
+@app.post("/export")
+async def export_document(request: ExportRequest):
+    """
+    Accepts content and a filename.
+    Uploads to Supabase Storage (S3) and returns a public URL.
+    """
+    logger.info(f"Received export request for: {request.filename}")
+    try:
+        url = rag_service.export_document(request.content, request.filename)
+        return {"success": True, "url": url}
+    except Exception as e:
+        logger.error(f"Export failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

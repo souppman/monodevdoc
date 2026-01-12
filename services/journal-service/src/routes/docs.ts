@@ -60,9 +60,14 @@ router.post('/', async (req: Request, res: Response) => {
         });
 
         res.json(doc);
-    } catch (error) {
+    } catch (error: any) {
         logger.error({ err: error }, 'Failed to create doc');
-        res.status(400).json({ error: 'Invalid payload' });
+        // Return actual error message for debugging
+        const errorMessage = error instanceof z.ZodError
+            ? (error as any).errors.map((e: any) => `${e.path.join('.')}: ${e.message}`).join(', ')
+            : (error as Error).message || 'Unknown error';
+
+        res.status(400).json({ error: `Invalid payload: ${errorMessage}` });
     }
 });
 

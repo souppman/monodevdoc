@@ -10,11 +10,14 @@ export default function Sidebar() {
   const [recentCommits, setRecentCommits] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('/api/git/commits')
+    const repoFullName = localStorage.getItem('current_repo_full_name');
+    if (!repoFullName) return;
+
+    fetch(`/api/git/commits?repo=${encodeURIComponent(repoFullName)}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          setRecentCommits(data); // Expecting array of { gitCommitHash, content, date, author }
+          setRecentCommits(data);
         }
       })
       .catch(err => console.error('Failed to fetch recent commits', err));

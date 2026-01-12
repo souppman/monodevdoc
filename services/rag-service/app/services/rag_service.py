@@ -3,8 +3,9 @@ import traceback
 from llama_index.core import VectorStoreIndex, StorageContext, Document, Settings
 from llama_index.vector_stores.pinecone import PineconeVectorStore
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.llms.openai import OpenAI
+from llama_index.llms.openai_like import OpenAILike
 from pinecone import Pinecone
+from supabase import create_client, Client
 from app.config import settings
 from devdoc_contracts import RAGIndexRequest, RAGIndexMetadata
 
@@ -15,30 +16,48 @@ class RAGService:
         self._initialize_settings()
         self._pc = Pinecone(api_key=settings.PINECONE_API_KEY)
         self._index_name = settings.PINECONE_INDEX_NAME
+        
+        # Initialize Supabase Client
+        # We need SUPABASE_URL and SUPABASE_SERVICE_KEY in .env
+        self._supabase: Client = create_client(settings.SUPABASE_URL, settings.SUPABASE_SERVICE_KEY)
 
     def _initialize_settings(self):
         """
         Configure LlamaIndex globally.
         - Embeddings: Local HuggingFace (BAAI/bge-small-en-v1.5).
-        - LLM: OpenRouter (Unified API for DeepSeek, GPT, etc.)
+        - LLM: Configured per-request via OpenRouter headers.
         """
         # Configure Embeddings (Local)
         Settings.embed_model = HuggingFaceEmbedding(
             model_name="BAAI/bge-small-en-v1.5"
         )
-
-        # Configure Default LLM via OpenRouter
-        # Using OpenAI client instead of OpenAILike for better stability
-        Settings.llm = OpenAI(
-            api_key=settings.LLM_API_KEY,
-            api_base=settings.LLM_BASE_URL,
-            model=settings.DEFAULT_MODEL,
-            temperature=0.1
-        )
+        # Note: Settings.llm is NOT set globally. It must be provided in the query context.
 
     def _get_vector_store(self):
         pinecone_index = self._pc.Index(self._index_name)
         return PineconeVectorStore(pinecone_index=pinecone_index)
+
+    def export_document(self, content: str, filename: str) -> str:
+        """
+        Uploads content to Supabase Storage and returns a public URL.
+        """
+        bucket_name = "doc_exports"
+        try:
+            # Upload (or overwrite) the file
+            # Encode string to bytes for upload
+            res = self._supabase.storage.from_(bucket_name).upload(
+                file=content.encode('utf-8'),
+                path=filename,
+                file_options={"upsert": "true", "content-type": "text/markdown"}
+            )
+            
+            # Get Public URL
+            public_url = self._supabase.storage.from_(bucket_name).get_public_url(filename)
+            logger.info(f"Exported document to {public_url}")
+            return public_url
+        except Exception as e:
+            logger.error(f"Failed to export document: {e}")
+            raise e
 
     def index_request(self, request: RAGIndexRequest) -> str:
         """
@@ -78,69 +97,59 @@ class RAGService:
         logger.info(f"Successfully indexed {request.metadata.id}")
         return request.metadata.id
 
-    def query_request(self, query: str, filters: dict = None, top_k: int = 10, model: str = None, doc_type: str = "Technical", doc_style: str = "Technical (Default)", api_key: str = None):
+
+    def query_request(self, query: str, project_id: str, filters: dict = None, top_k: int = 10, model: str = None, doc_type: str = "Technical", doc_style: str = "Technical (Default)", api_key: str = None):
         """
         Queries the Pinecone index with an optional model preference, doc_type prompt, and doc_style tone.
         """
         try:
-            with open("debug_error.log", "a") as f:
-                f.write(f"Entering query_request. Params: model={model}, key_provided={'Yes' if api_key else 'No'}\n")
-                f.flush()
-
             vector_store = self._get_vector_store()
             index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
 
-            # Apply specific model for this query if provided, otherwise use default
-            # If api_key is provided in request, prioritize it over settings
-            llm = Settings.llm
-            if model or api_key:
-                used_model = model if model else settings.DEFAULT_MODEL
-                
-                # Use provided key OR fallback to env var
-                key_to_use = api_key if api_key else settings.LLM_API_KEY
-                
-                with open("debug_error.log", "a") as f:
-                    f.write(f"Init LLM - Model: {used_model}, Key Length: {len(key_to_use) if key_to_use else 0}\n")
-                    f.flush()
-                
-                if not key_to_use:
-                    raise ValueError("No API Key available. Please set LLM_API_KEY in .env or provide 'settings_openrouter_key' in frontend request.")
-
-                llm = OpenAI(
-                    api_key=key_to_use,
-                    api_base=settings.LLM_BASE_URL,
-                    model=used_model,
-                    temperature=0.1
-                )
+            # Strict Validation: API Key and Model must be provided via headers/context
+            if not api_key:
+                raise ValueError("Missing OpenRouter API Key. Please ensure it is set in Web App Settings.")
             
-            with open("debug_error.log", "a") as f:
-                f.write("LLM Setup Complete. Building filters...\n")
-                f.flush()
+            if not model:
+                raise ValueError("Missing OpenRouter Model. Please ensure it is set in Web App Settings.")
 
+            if not project_id:
+                raise ValueError("Missing project_id. Data isolation is strictly enforced.")
+
+            # Configure LLM dynamically for this request
+            llm = OpenAILike(
+                api_key=api_key,
+                api_base="https://openrouter.ai/api/v1", # Hardcoded OpenRouter URL as per strict requirement
+                model=model,
+                is_chat_model=True,
+                temperature=0.1
+            )
+            
             # Build Metadata Filters if present
             from llama_index.core.vector_stores import MetadataFilters, ExactMatchFilter
             
             query_filters = None
-            if filters:
-                metadata_filters = [
-                    ExactMatchFilter(key=k, value=v) for k, v in filters.items()
-                ]
-                query_filters = MetadataFilters(filters=metadata_filters)
             
-            with open("debug_error.log", "a") as f:
-                f.write("Filters built. Creating query engine...\n")
-                f.flush()
+            # Build Metadata Filters
+            # STRICT ENFORCEMENT: Always filter by project_id
+            from llama_index.core.vector_stores import MetadataFilters, ExactMatchFilter
+            
+            metadata_filters = [
+                ExactMatchFilter(key="project_id", value=project_id)
+            ]
 
+            if filters:
+                for k, v in filters.items():
+                    metadata_filters.append(ExactMatchFilter(key=k, value=v))
+            
+            query_filters = MetadataFilters(filters=metadata_filters)
+            
             # Create Query Engine
             query_engine = index.as_query_engine(
                 llm=llm,
                 filters=query_filters,
                 similarity_top_k=top_k
             )
-
-            with open("debug_error.log", "a") as f:
-                f.write("Query engine created. Updating prompts...\n")
-                f.flush()
 
             # Prompt Engineering based on Doc Type
             templates = {
@@ -196,24 +205,13 @@ class RAGService:
                 {"response_synthesizer:text_qa_template": new_summary_tmpl}
             )
 
-            with open("debug_error.log", "a") as f:
-                f.write(f"Prompts updated. Executing query with model {model or 'default'}...\n")
-                f.flush()
-
             logger.info(f"Executing query with model {model or 'default'}")
             response = query_engine.query(query)
             
-            with open("debug_error.log", "a") as f:
-                f.write("Query executed successfully.\n")
-                f.flush()
-
             return response
 
         except Exception as e:
             error_msg = f"CRITICAL ERROR in query_request: {str(e)}\nTraceback: {traceback.format_exc()}\n"
-            with open("debug_error.log", "a") as f:
-                f.write(error_msg)
-                f.flush()
             logger.error(error_msg)
             raise e
 

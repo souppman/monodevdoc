@@ -12,9 +12,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: 'Missing code parameter' }, { status: 400 });
     }
 
-    console.log('[Auth Debug] Processing callback with code:', code.substring(0, 5) + '...');
-    console.log('[Auth Debug] GITHUB_CLIENT_ID present:', !!process.env.GITHUB_CLIENT_ID);
-    console.log('[Auth Debug] GITHUB_CLIENT_SECRET present:', !!process.env.GITHUB_CLIENT_SECRET);
+
 
 
     try {

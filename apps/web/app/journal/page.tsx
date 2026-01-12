@@ -22,8 +22,14 @@ export default function JournalDashboard() {
   // Fetch entries on mount
   useEffect(() => {
     async function fetchEntries() {
+      const storedProject = localStorage.getItem('current_project_id');
+      if (!storedProject) {
+        setLoading(false);
+        return;
+      }
+
       try {
-        const res = await fetch('/api/journal/entries');
+        const res = await fetch(`/api/journal/entries?projectId=${encodeURIComponent(storedProject)}`);
         if (res.ok) {
           const data = await res.json();
           setJournalEntries(data);

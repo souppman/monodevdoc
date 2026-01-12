@@ -21,9 +21,9 @@ export default function Header({
 
   useEffect(() => {
     if (!propRepo) {
-      const stored = localStorage.getItem('current_project_id');
+      const stored = localStorage.getItem('current_repo_full_name');
       if (stored) {
-        setRepoName(stored + ' /');
+        setRepoName(stored);
       }
     }
   }, [propRepo]);

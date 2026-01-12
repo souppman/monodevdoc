@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -11,20 +10,11 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
 
-        // Forward the request to the RAG service's /query endpoint (or /generate if that's what we decided, checking main.py)
-        // main.py has /query for RAGQueryRequest. The UI "Generate" feature basically queries the RAG service.
-        // Let's check main.py again. It accepts RAGQueryRequest at /query.
-        // The implementation plan said /generate, but main.py has /query. I will use /query to match the actual service.
-
-        const openRouterKey = request.headers.get('X-OpenRouter-Key') || '';
-        const openRouterModel = request.headers.get('X-OpenRouter-Model') || '';
-
-        const res = await fetch(`${RAG_SERVICE_URL}/query`, {
+        // Forward to RAG Service /export endpoint
+        const res = await fetch(`${RAG_SERVICE_URL}/export`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-OpenRouter-Key': openRouterKey,
-                'X-OpenRouter-Model': openRouterModel,
             },
             body: JSON.stringify(body),
         });
@@ -37,7 +27,7 @@ export async function POST(request: NextRequest) {
         const data = await res.json();
         return NextResponse.json(data, { status: res.status });
     } catch (error) {
-        console.error('BFF RAG Proxy Error:', error);
+        console.error('BFF RAG Export Proxy Error:', error);
         return NextResponse.json({ error: 'Failed to connect to RAG Service' }, { status: 500 });
     }
 }

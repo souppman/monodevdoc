@@ -100,13 +100,41 @@ export default function GitHubAuth() {
     }
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (selectedRepo && user) {
-      localStorage.setItem('current_project_id', selectedRepo.name);
-      localStorage.setItem('current_repo_full_name', selectedRepo.full_name);
-      localStorage.setItem('current_repo_url', `https://github.com/${selectedRepo.full_name}`);
-      localStorage.setItem('current_user_login', user.login); // Save for Jounal Entry
-      router.push('/dashboard');
+      try {
+        setLoading(true);
+        // 1. Upsert Project in Backend
+        const res = await fetch('/api/projects', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: String(selectedRepo.id),
+            name: selectedRepo.name,
+            repoUrl: selectedRepo.html_url,
+            ownerId: user.login
+          })
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to connect project');
+        }
+
+        const project = await res.json();
+
+        // 2. Save Context
+        localStorage.setItem('current_project_id', project.id);
+        localStorage.setItem('current_repo_full_name', selectedRepo.full_name);
+        localStorage.setItem('current_repo_url', selectedRepo.html_url);
+        localStorage.setItem('current_user_login', user.login);
+
+        // 3. Redirect
+        router.push('/dashboard');
+      } catch (e) {
+        console.error("Failed to connect project", e);
+        alert("Failed to connect project. Please try again.");
+        setLoading(false);
+      }
     }
   };
 
@@ -187,35 +215,6 @@ export default function GitHubAuth() {
               <div className="text-center">
                 <span className="text-xs text-gray-400">Logged in as {user.login || user.name}</span>
               </div>
-
-              <div className="relative mt-4">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or manually enter different repo</span>
-                </div>
-              </div>
-
-              {/* Manual Input (Authenticated) */}
-              <form onSubmit={handleManualConnect} className="space-y-4 pt-2">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="e.g. https://github.com/google/jax"
-                    value={repoInput}
-                    onChange={(e) => setRepoInput(e.target.value)}
-                    className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={!repoInput.trim()}
-                  className="w-full py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium text-sm transition-colors"
-                >
-                  Connect External Repo
-                </button>
-              </form>
             </div>
           )}
         </div>

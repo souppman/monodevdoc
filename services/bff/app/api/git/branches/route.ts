@@ -1,25 +1,57 @@
 
-import { NextResponse } from 'next/server';
-import axios from 'axios';
+import { NextRequest, NextResponse } from 'next/server';
+import { parse } from 'cookie';
+import jwt from 'jsonwebtoken';
 
-const JOURNAL_SERVICE_URL = process.env.JOURNAL_SERVICE_URL || 'http://localhost:3001';
+export const runtime = 'nodejs';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
-    const projectId = searchParams.get('projectId');
+    const repo = searchParams.get('repo'); // "owner/repo"
 
-    console.log(`[BFF] Proxying to Journal Service: GET /git/branches?projectId=${projectId || ''}`);
+    // 1. Auth Check
+    const cookies = parse(request.headers.get('cookie') || '');
+    const sessionToken = cookies.devdoc_session;
+
+    if (!sessionToken) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    if (!repo) {
+        return NextResponse.json({ error: 'Missing repo query param' }, { status: 400 });
+    }
 
     try {
-        const response = await axios.get(`${JOURNAL_SERVICE_URL}/git/branches`, {
-            params: { projectId }
+        // 2. Extract Access Token
+        const jwtSecret = process.env.JWT_SECRET || 'dev-secret-do-not-use-in-prod';
+        const decoded = jwt.verify(sessionToken, jwtSecret) as any;
+        const accessToken = decoded.access_token;
+
+        // 3. Call GitHub API
+        const ghRes = await fetch(`https://api.github.com/repos/${repo}/branches`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: 'application/vnd.github.v3+json'
+            }
         });
-        return NextResponse.json(response.data);
-    } catch (error: any) {
-        console.error('[BFF] Error proxying to Journal Service:', error.message);
-        if (error.response) {
-            return NextResponse.json(error.response.data, { status: error.response.status });
+
+        if (!ghRes.ok) {
+            console.error('GitHub API Error:', await ghRes.text());
+            return NextResponse.json({ error: 'Failed to fetch branches from GitHub' }, { status: ghRes.status });
         }
-        return NextResponse.json({ error: 'Failed to fetch git branches' }, { status: 500 });
+
+        const branches = await ghRes.json();
+
+        // 4. Map to Frontend Format
+        const mappedBranches = branches.map((b: any) => ({
+            name: b.name,
+            current: false // GitHub API doesn't know "current" context of local machine
+        }));
+
+        return NextResponse.json(mappedBranches);
+
+    } catch (error) {
+        console.error('BFF Branches Error:', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

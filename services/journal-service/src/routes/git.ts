@@ -27,4 +27,33 @@ router.get('/commits', async (req: Request, res: Response) => {
     }
 });
 
+router.get('/branches', async (req: Request, res: Response) => {
+    try {
+        // Fetch all branches (-a) to see remotes like 'frontend-dev'
+        const branchSummary = await git.branch(['-a']);
+
+        // Extract names, remove 'remotes/origin/' prefix, and deduplicate
+        const uniqueNames = new Set<string>();
+
+        branchSummary.all.forEach(name => {
+            // "remotes/origin/HEAD -> origin/main" case?
+            if (name.includes('HEAD')) return;
+
+            // "remotes/origin/my-branch" -> "my-branch"
+            const cleanName = name.replace('remotes/origin/', '').replace('origin/', '');
+            uniqueNames.add(cleanName);
+        });
+
+        const branches = Array.from(uniqueNames).map(name => ({
+            name,
+            current: name === branchSummary.current
+        })).sort((a, b) => a.name.localeCompare(b.name));
+
+        res.json(branches);
+    } catch (error: any) {
+        logger.error({ err: error.message }, 'Failed to fetch git branches');
+        res.status(500).json({ error: 'Failed to fetch local branches' });
+    }
+});
+
 export default router;

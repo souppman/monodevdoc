@@ -7,6 +7,7 @@ import axios from 'axios';
 import pino from 'pino';
 import { RAGIndexRequest } from 'devdoc-contracts';
 import ignore from 'ignore';
+import simpleGit from 'simple-git';
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 const RAG_SERVICE_URL = process.env.RAG_SERVICE_URL || 'http://127.0.0.1:8000';
@@ -14,6 +15,7 @@ const PROJECT_ID = 'monodevdoc_local';
 
 // Target the monorepo root (assuming service is running in services/journal-service/src/...)
 const REPO_ROOT = path.resolve(__dirname, '../../../../');
+const git = simpleGit(REPO_ROOT);
 
 export const fileWatcher = {
     watcher: null as FSWatcher | null,
@@ -79,6 +81,13 @@ async function indexFile(filePath: string) {
 
         if (!content.trim()) return;
 
+        // Fetch dynamic Git metadata
+        const [commitHash, branch, userEmail] = await Promise.all([
+            git.revparse(['HEAD']).catch(() => 'unknown_commit'),
+            git.revparse(['--abbrev-ref', 'HEAD']).catch(() => 'unknown_branch'),
+            git.raw(['config', 'user.email']).then(res => res.trim()).catch(() => 'unknown_author')
+        ]);
+
         const ragPayload: RAGIndexRequest = {
             content: content,
             metadata: {
@@ -86,16 +95,16 @@ async function indexFile(filePath: string) {
                 source: 'code_file',
                 project_id: PROJECT_ID,
                 created_at: new Date().toISOString(),
-                git_branch: 'HEAD',
-                git_commit_hash: 'HEAD',
+                git_branch: branch,
+                git_commit_hash: commitHash,
                 file_path: relativePath,
-                author_id: 'auto_watcher',
+                author_id: userEmail,
                 repo_url: 'local',
             },
         };
 
         await axios.post(`${RAG_SERVICE_URL}/index`, ragPayload);
-        logger.info(`Auto-indexed change: ${relativePath}`);
+        logger.info(`Auto-indexed change: ${relativePath} (Commit: ${commitHash.substring(0, 7)})`);
     } catch (error: any) {
         logger.error({ err: error.message, file: filePath }, 'Failed to auto-index changed file');
     }

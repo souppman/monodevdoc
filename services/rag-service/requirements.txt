@@ -12,4 +12,4 @@ pinecone
 pydantic-settings
 python-dotenv
 pytest
-# git+https://github.com/souppman/devdoc-contracts.git # Already installed, keeping for reference
+supabase

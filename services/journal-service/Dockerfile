@@ -9,8 +9,8 @@ FROM base AS build
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 
-# Install dependencies (utilizing cache)
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+# Install dependencies
+RUN pnpm install --frozen-lockfile
 
 # Build Workspace Packages
 RUN pnpm --filter devdoc-contracts build

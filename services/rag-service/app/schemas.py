@@ -6,8 +6,8 @@ from datetime import datetime
 # see app/main.py for usage.
 
 class RAGQueryRequest(BaseModel):
-    query: str
-    project_id: str
+    query: str = Field(min_length=1)
+    project_id: str = Field(min_length=1)
     doc_type: str = "Technical" # "Architecture Documentation", "Requirements", etc.
     doc_style: str = "Technical (Default)" # "Beginner Friendly", "Comprehensive", "Minimal"
     filters: Optional[dict] = None

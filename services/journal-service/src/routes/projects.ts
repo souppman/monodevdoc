@@ -36,41 +36,28 @@ router.post('/', async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Missing required fields: id, name, ownerId' });
         }
 
-        // 1. Ensure User Exists (Self-healing)
-        // We assume ownerId is the GitHub Login or ID used for auth
-        await prisma.user.upsert({
-            where: { id: ownerId }, // Schema: id is String @id
-            // If email is unique and we don't have it, we might have a conflict if we try to create with dummy email.
-            // However, User model requires email @unique.
-            // We'll use a placeholder email if verifying/creating, or check if we can skip it.
-            // Schema: email String @unique.
-            // This is tricky if we don't have the email from the frontend.
-            // The frontend has `user` object from session.
-            // Let's assume we can pass email if we have it, or generate a dummy one: `id@github.placeholder`
-            update: {},
-            create: {
-                id: ownerId,
-                email: `${ownerId}@github.placeholder`, // Fallback
-                name: ownerId
-            }
-        }).catch((err: any) => {
-            // Soft ignore if email conflict, but user might already exist
-            logger.warn({ err }, 'User upsert warning');
-        });
-
-        // 2. Upsert Project
+        // 2. Upsert Project with Safe User Connection
         const project = await prisma.project.upsert({
             where: { id: String(id) },
             update: {
                 name,
                 repoUrl,
-                ownerId
+                ownerId // Ensure ownerId is updated if changed
             },
             create: {
                 id: String(id),
                 name,
                 repoUrl,
-                ownerId
+                owner: {
+                    connectOrCreate: {
+                        where: { id: ownerId },
+                        create: {
+                            id: ownerId,
+                            email: `${ownerId}@github.placeholder`,
+                            name: ownerId
+                        }
+                    }
+                }
             }
         });
 

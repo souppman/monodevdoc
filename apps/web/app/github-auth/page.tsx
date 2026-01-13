@@ -146,7 +146,17 @@ export default function GitHubAuth() {
         });
 
         if (!res.ok) {
-          throw new Error('Failed to connect project');
+          const errText = await res.text();
+          let errMessage = 'Failed to connect project';
+          try {
+            // Try to parse JSON error
+            const errJson = JSON.parse(errText);
+            if (errJson.error) errMessage = errJson.error;
+          } catch (e) {
+            // If not JSON, use text or default
+            if (errText) errMessage = errText;
+          }
+          throw new Error(errMessage);
         }
 
         const project = await res.json();

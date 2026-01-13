@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/cookie": "^1.0.0",
+    "cookie": "^1.1.1",
     "devdoc-contracts": "workspace:*",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",

@@ -1,6 +1,9 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
+// Allow up to 60 seconds (Hobby limit) or more (Pro) for AI generation
+export const maxDuration = 60;
+
 export async function POST(request: NextRequest) {
     const RAG_SERVICE_URL = process.env.RAG_SERVICE_URL;
 

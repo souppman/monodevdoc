@@ -13,7 +13,8 @@ const git = simpleGit(REPO_ROOT);
 
 router.get('/commits', async (req: Request, res: Response) => {
     try {
-        const log = await git.log({ maxCount: 10 });
+        await git.fetch(); // Ensure we have latest from remote
+        const log = await git.log({ maxCount: 50 });
         const commits = log.all.map(commit => ({
             gitCommitHash: commit.hash,
             content: commit.message,
@@ -29,6 +30,7 @@ router.get('/commits', async (req: Request, res: Response) => {
 
 router.get('/branches', async (req: Request, res: Response) => {
     try {
+        await git.fetch(); // Ensure we have latest from remote
         // Fetch all branches (-a) to see remotes like 'frontend-dev'
         const branchSummary = await git.branch(['-a']);
 

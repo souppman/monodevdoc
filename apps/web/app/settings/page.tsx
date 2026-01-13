@@ -13,6 +13,7 @@ export default function Settings() {
     const [isExporting, setIsExporting] = useState(false);
 
     const [branches, setBranches] = useState<string[]>([]);
+    const [defaultBranch, setDefaultBranch] = useState('main');
 
     useEffect(() => {
         const storedRepo = localStorage.getItem('current_project_id');
@@ -47,6 +48,9 @@ export default function Settings() {
 
         const storedStyle = localStorage.getItem('settings_doc_style');
         if (storedStyle) setDocStyle(storedStyle);
+
+        const storedBranch = localStorage.getItem('settings_default_branch');
+        if (storedBranch) setDefaultBranch(storedBranch);
     }, []);
 
     const handleChangeProject = () => {
@@ -58,6 +62,7 @@ export default function Settings() {
         localStorage.setItem('settings_ai_model', aiModel);
         localStorage.setItem('settings_openrouter_key', openRouterKey);
         localStorage.setItem('settings_doc_style', docStyle);
+        localStorage.setItem('settings_default_branch', defaultBranch);
         alert('Settings saved successfully!');
     };
 
@@ -150,7 +155,11 @@ export default function Settings() {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Default Branch
                             </label>
-                            <select className="px-4 py-2 border border-gray-300 rounded-lg text-black">
+                            <select
+                                value={defaultBranch}
+                                onChange={(e) => setDefaultBranch(e.target.value)}
+                                className="px-4 py-2 border border-gray-300 rounded-lg text-black"
+                            >
                                 {branches.length > 0 ? (
                                     branches.map(branch => (
                                         <option key={branch} value={branch}>{branch}</option>

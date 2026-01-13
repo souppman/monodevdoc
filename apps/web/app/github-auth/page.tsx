@@ -18,9 +18,38 @@ export default function GitHubAuth() {
   const [selectedRepo, setSelectedRepo] = useState<any>(null);
   const router = useRouter();
 
+  const [searchParams] = useState(typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null);
+
   useEffect(() => {
-    checkSession();
+    // Check for token in URL (Cross-Domain Auth)
+    const token = searchParams?.get('token');
+    if (token) {
+      handleTokenExchange(token);
+    } else {
+      checkSession();
+    }
   }, []);
+
+  const handleTokenExchange = async (token: string) => {
+    try {
+      setLoading(true);
+      // Call local API to set cookie
+      await fetch('/api/auth/set-cookie', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+
+      // Clear URL
+      window.history.replaceState({}, '', '/github-auth');
+
+      // Verify session
+      await checkSession();
+    } catch (e) {
+      console.error("Failed to set session", e);
+      setLoading(false);
+    }
+  };
 
   const checkSession = async () => {
     try {

@@ -63,21 +63,14 @@ export async function GET(request: NextRequest) {
             { expiresIn: '7d' }
         );
 
-        // 4. Set Cookie
-        const cookie = serialize('devdoc_session', sessionToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7, // 1 week
-        });
-
-        // 5. Redirect to Frontend
+        // 5. Redirect to Frontend with Token (Cross-Domain Fix)
+        // We cannot set a cookie for Vercel from Railway.
+        // We pass the token in the URL, and the Frontend will set its own cookie.
         const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-        const response = NextResponse.redirect(new URL(`${frontendUrl}/github-auth`, request.url));
-        response.headers.append('Set-Cookie', cookie);
+        const redirectUrl = new URL(`${frontendUrl}/github-auth`, request.url);
+        redirectUrl.searchParams.set('token', sessionToken);
 
-        return response;
+        return NextResponse.redirect(redirectUrl);
 
     } catch (error) {
         console.error('OAuth Callback Error:', error);

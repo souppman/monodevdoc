@@ -25,12 +25,17 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
     const JOURNAL_SERVICE_URL = process.env.JOURNAL_SERVICE_URL;
-    if (!JOURNAL_SERVICE_URL) return NextResponse.json({ error: 'JOURNAL_SERVICE_URL not configured' }, { status: 500 });
+    if (!JOURNAL_SERVICE_URL) {
+        console.error('Configuration Error: JOURNAL_SERVICE_URL is missing');
+        return NextResponse.json({ error: 'JOURNAL_SERVICE_URL not configured' }, { status: 500 });
+    }
 
     try {
         const body = await request.json();
+        const targetUrl = `${JOURNAL_SERVICE_URL}/projects`;
+        console.log(`[BFF] POST Project -> Attempting to fetch: ${targetUrl}`);
 
-        const res = await fetch(`${JOURNAL_SERVICE_URL}/projects`, {
+        const res = await fetch(targetUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)

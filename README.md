@@ -2,7 +2,7 @@
 
 Unified repository for DevDoc services and shared contracts.
 
-##  Repository Structure
+##  Repository Structure 
 
 - **`apps/web`**: Next.js Frontend (UI).
 - **`services/bff`**: Next.js BFF (API Gateway/Orchestration).

@@ -69,7 +69,7 @@ export default function SearchDashboard() {
 
                 {/* Search Results */}
                 <div className="space-y-4">
-                    <span className="block text-gray-500">Found <strong>8 results</strong> for "authentication"</span>
+                    <span className="block text-gray-500">Found <strong>8 results</strong> for &quot;authentication&quot;</span>
 
                     <div className="flex gap-4 px-8 py-6 border border-gray-200 rounded-lg">
                         <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-lg">
@@ -128,7 +128,7 @@ export default function SearchDashboard() {
                             <p className="w-fit px-4 py-2 mb-2 text-sm text-gray-700 bg-gray-100 rounded">
                                 const decoded = jwt.verify(token, secretKey);
                                 <br />
-                                // return original payload if <mark className="bg-yellow-200">authentication</mark> is valid
+                                {`// return original payload if ${<mark className="bg-yellow-200">authentication</mark>} is valid`}
                                 <br />
                                 return decoded;
                             </p>

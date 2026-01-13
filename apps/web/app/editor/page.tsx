@@ -202,6 +202,8 @@ export default function DocumentEditor() {
     const aiModify = () => {
         const markdownContent = editor.getMarkdown();
 
+        console.log(markdownContent);
+
         /* TO-DO INSERT BFF CALL TO MAKE AI EDITS TO CURRENT DOCUMENT */
     }
 

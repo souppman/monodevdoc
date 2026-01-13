@@ -3,12 +3,16 @@ import pino from 'pino';
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
-const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN, // Optional for public repos, required for private
-});
+// Helper to get authenticated Octokit
+const getOctokit = (token?: string) => {
+    return new Octokit({
+        auth: token || process.env.GITHUB_TOKEN, // Fallback to system token if none provided
+    });
+};
 
-export const fetchFileContent = async (owner: string, repo: string, path: string, ref: string): Promise<string | null> => {
+export const fetchFileContent = async (owner: string, repo: string, path: string, ref: string, token?: string): Promise<string | null> => {
     try {
+        const octokit = getOctokit(token);
         const response = await octokit.repos.getContent({
             owner,
             repo,
@@ -28,8 +32,9 @@ export const fetchFileContent = async (owner: string, repo: string, path: string
     }
 };
 
-export const fetchRepoTree = async (owner: string, repo: string, ref: string = 'main'): Promise<string[]> => {
+export const fetchRepoTree = async (owner: string, repo: string, ref: string = 'main', token?: string): Promise<string[]> => {
     try {
+        const octokit = getOctokit(token);
         const response = await octokit.git.getTree({
             owner,
             repo,

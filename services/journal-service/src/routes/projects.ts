@@ -77,7 +77,10 @@ router.post('/', async (req: Request, res: Response) => {
         logger.info({ projectId: project.id }, 'Project upserted successfully');
 
         // TRIGGER BACKGROUND SYNC
-        syncProject(project.id).catch(err => {
+        // Extract GitHub Token from Header (Multi-Tenant Support)
+        const githubToken = req.headers['x-github-token'] as string | undefined;
+
+        syncProject(project.id, githubToken).catch(err => {
             logger.error({ err, projectId: project.id }, 'Background Sync Failed');
         });
 

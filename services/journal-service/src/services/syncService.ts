@@ -16,8 +16,8 @@ const parseRepoUrl = (url: string) => {
     }
 };
 
-export const syncProject = async (projectId: string): Promise<{ success: boolean; indexedCount: number; totalFiles: number }> => {
-    logger.info({ projectId }, 'Starting background project sync...');
+export const syncProject = async (projectId: string, token?: string): Promise<{ success: boolean; indexedCount: number; totalFiles: number }> => {
+    logger.info({ projectId, hasToken: !!token }, 'Starting background project sync...');
 
     try {
         const project = await prisma.project.findUnique({ where: { id: projectId } });
@@ -34,9 +34,9 @@ export const syncProject = async (projectId: string): Promise<{ success: boolean
 
         const { owner, repo } = repoDetails;
 
-        // 1. Fetch all files
+        // 1. Fetch all files (Pass Token)
         logger.info({ owner, repo }, 'Fetching repo tree...');
-        const allFiles = await fetchRepoTree(owner, repo);
+        const allFiles = await fetchRepoTree(owner, repo, 'main', token);
 
         // 2. Filter for code
         const codeFiles = allFiles.filter(f =>
@@ -53,7 +53,7 @@ export const syncProject = async (projectId: string): Promise<{ success: boolean
 
         for (const filePath of codeFiles) {
             try {
-                const content = await fetchFileContent(owner, repo, filePath, 'main');
+                const content = await fetchFileContent(owner, repo, filePath, 'main', token);
                 if (!content) continue;
 
                 const ragPayload: RAGIndexRequest = {

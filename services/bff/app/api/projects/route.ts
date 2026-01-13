@@ -1,6 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
-
+import jwt from 'jsonwebtoken';
+import { parse } from 'cookie';
 
 export async function GET(request: NextRequest) {
     const JOURNAL_SERVICE_URL = process.env.JOURNAL_SERVICE_URL;
@@ -35,9 +36,27 @@ export async function POST(request: NextRequest) {
         const targetUrl = `${JOURNAL_SERVICE_URL}/projects`;
         console.log(`[BFF] POST Project -> Attempting to fetch: ${targetUrl}`);
 
+        // Extract GitHub Token from Session
+        const cookies = parse(request.headers.get('cookie') || '');
+        const sessionToken = cookies.devdoc_session;
+        let githubToken = '';
+
+        if (sessionToken) {
+            try {
+                const jwtSecret = process.env.JWT_SECRET || 'dev-secret-do-not-use-in-prod';
+                const decoded = jwt.verify(sessionToken, jwtSecret) as any;
+                githubToken = decoded.access_token || '';
+            } catch (e) {
+                console.warn('Failed to decode session token for GitHub auth', e);
+            }
+        }
+
         const res = await fetch(targetUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'X-GitHub-Token': githubToken // Pass token to Journal Service
+            },
             body: JSON.stringify(body)
         });
 

@@ -14,7 +14,8 @@ const git = simpleGit(REPO_ROOT);
 router.get('/commits', async (req: Request, res: Response) => {
     try {
         await git.fetch(); // Ensure we have latest from remote
-        const log = await git.log({ maxCount: 50 });
+        // Log from the remote HEAD to see the actual history, not just the local container's checkout
+        const log = await git.log({ from: 'origin/main', maxCount: 50 });
         const commits = log.all.map(commit => ({
             gitCommitHash: commit.hash,
             content: commit.message,

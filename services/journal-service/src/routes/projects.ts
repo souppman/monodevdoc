@@ -4,6 +4,8 @@ import { Project } from '@prisma/client';
 import prisma from '../prisma';
 import logger from '../utils/logger';
 
+import { syncProject } from '../services/syncService';
+
 const router = express.Router();
 
 // GET /projects/lookup?repoUrl=...
@@ -73,6 +75,12 @@ router.post('/', async (req: Request, res: Response) => {
         });
 
         logger.info({ projectId: project.id }, 'Project upserted successfully');
+
+        // TRIGGER BACKGROUND SYNC
+        syncProject(project.id).catch(err => {
+            logger.error({ err, projectId: project.id }, 'Background Sync Failed');
+        });
+
         res.json(project);
 
     } catch (error: any) {

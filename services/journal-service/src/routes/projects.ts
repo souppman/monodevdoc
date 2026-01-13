@@ -31,6 +31,7 @@ router.get('/lookup', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     try {
         const { id, name, repoUrl, ownerId } = req.body;
+        logger.info({ id, name, ownerId }, 'Received POST /projects request');
 
         if (!id || !name || !ownerId) {
             return res.status(400).json({ error: 'Missing required fields: id, name, ownerId' });

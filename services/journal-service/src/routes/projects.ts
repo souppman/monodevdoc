@@ -76,7 +76,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     } catch (error: any) {
         logger.error({ err: error.message }, 'Failed to upsert project');
-        res.status(500).json({ error: 'Failed to upsert project' });
+        res.status(500).json({ error: error.message || 'Failed to upsert project' });
     }
 });
 

@@ -43,8 +43,8 @@ export async function POST(request: NextRequest) {
 
         const data = await res.json();
         return NextResponse.json(data, { status: 201 });
-    } catch (error) {
+    } catch (error: any) {
         console.error('BFF Upsert Project Error:', error);
-        return NextResponse.json({ error: 'Failed to upsert project' }, { status: 500 });
+        return NextResponse.json({ error: error.message || 'Failed to upsert project' }, { status: 500 });
     }
 }

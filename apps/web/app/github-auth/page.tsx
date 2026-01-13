@@ -169,9 +169,9 @@ export default function GitHubAuth() {
 
         // 3. Redirect
         router.push('/dashboard');
-      } catch (e) {
+      } catch (e: any) {
         console.error("Failed to connect project", e);
-        alert("Failed to connect project. Please try again.");
+        alert(e.message || "Failed to connect project. Please try again.");
         setLoading(false);
       }
     }

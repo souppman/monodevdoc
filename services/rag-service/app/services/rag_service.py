@@ -37,6 +37,13 @@ class RAGService:
         pinecone_index = self._pc.Index(self._index_name)
         return PineconeVectorStore(pinecone_index=pinecone_index)
 
+    def get_stats(self):
+        """
+        Returns stats from the underlying Pinecone index.
+        """
+        index = self._pc.Index(self._index_name)
+        return index.describe_index_stats()
+
     def export_document(self, content: str, filename: str) -> str:
         """
         Uploads content to Supabase Storage and returns a public URL.

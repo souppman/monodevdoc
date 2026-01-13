@@ -21,6 +21,18 @@ app = FastAPI(
 async def root():
     return {"message": "DevDoc RAG Service is running"}
 
+@app.get("/stats")
+async def get_stats():
+    """
+    Returns statistics about the Pinecone index (e.g. total vector count).
+    """
+    try:
+        stats = rag_service.get_stats()
+        return {"success": True, "stats": stats}
+    except Exception as e:
+        logger.error(f"Failed to get stats: {e}")
+        return {"success": False, "error": str(e)}
+
 @app.post("/index")
 async def index_document(request: RAGIndexRequest):
     """

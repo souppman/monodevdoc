@@ -37,12 +37,22 @@ router.post('/', async (req: Request, res: Response) => {
         }
 
         // 2. Upsert Project with Safe User Connection
+        // 2. Upsert Project with Safe User Connection
         const project = await prisma.project.upsert({
             where: { id: String(id) },
             update: {
                 name,
                 repoUrl,
-                ownerId // Ensure ownerId is updated if changed
+                owner: {
+                    connectOrCreate: {
+                        where: { id: ownerId },
+                        create: {
+                            id: ownerId,
+                            email: `${ownerId}@github.placeholder`,
+                            name: ownerId
+                        }
+                    }
+                }
             },
             create: {
                 id: String(id),

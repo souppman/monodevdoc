@@ -181,7 +181,7 @@ export default function GenerateDocumentation() {
             </header>
 
             <main className="px-8 py-6">
-                <div className="flex flex-col items-end gap-6">
+                <div className="flex flex-col items-center gap-6">
                     {/* Documentation Type */}
                     <div className="w-full px-8 py-6 border border-gray-200 rounded-lg">
                         <label htmlFor="docType" className="block mb-3 font-semibold text-gray-900">
@@ -330,15 +330,15 @@ export default function GenerateDocumentation() {
                         />
                     </div>
 
-          {/* Generate button */}
-          <button
-            onClick={handleGenerate}
-            disabled={isGenerating}
-            className={`w-full py-4 bg-gray-300 hover:bg-gray-400 text-black text-lg rounded transition-colors ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-          >
-            {isGenerating ? 'Generating...' : 'Generate Documentation'}
-          </button>
+                    {/* Generate button */}
+                    <button
+                      onClick={handleGenerate}
+                      disabled={isGenerating}
+                      className={`px-6 py-2 text-lg text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors transition-colors ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                    >
+                      {isGenerating ? 'Generating...' : 'Generate Documentation'}
+                    </button>
         </div>
       </main>
 

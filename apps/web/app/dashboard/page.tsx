@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Pencil, Trash2, Maximize2, X, FileText } from 'lucide-react';
+import { Trash2, Maximize2, X, FileText } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function Dashboard() {

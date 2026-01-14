@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Search, FileText, BookOpen, FileCode } from 'lucide-react';
 
 export default function SearchDashboard() {
-
     const [activeFilter, setActiveFilter] = useState<'all' | 'documents' | 'journal' | 'code'>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [results, setResults] = useState<any[]>([]);
@@ -39,7 +38,7 @@ export default function SearchDashboard() {
     return (
         <div className="flex-1 bg-white">
             {/* Header */}
-            <header className="px-8 py-6 border-b border-gray-200 relative">
+            <header className="relative px-8 py-6 border-b border-gray-200">
                 <Search className="absolute left-12 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                     type="text"
@@ -55,13 +54,48 @@ export default function SearchDashboard() {
                 {/* Filter Tabs */}
                 <div className="flex gap-4">
                     <button
+                        type="button"
                         onClick={() => setActiveFilter('all')}
-                        className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${activeFilter === 'all'
+                        className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                            activeFilter === 'all'
                                 ? 'bg-blue-100 text-blue-700'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                            }`}
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
                     >
                         All
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setActiveFilter('documents')}
+                        className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                            activeFilter === 'documents'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                        Documentation
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setActiveFilter('journal')}
+                        className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                            activeFilter === 'journal'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                        Journal Entries
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setActiveFilter('code')}
+                        className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                            activeFilter === 'code'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                        Code
                     </button>
                     {/* Other filters disabled for visual cleanup until implemented filters logic */}
                 </div>
@@ -97,5 +131,5 @@ export default function SearchDashboard() {
                 </div>
             </main>
         </div>
-    )
+    );
 }

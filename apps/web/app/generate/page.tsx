@@ -225,7 +225,7 @@ export default function GenerateDocumentation() {
                                 >
                                     {formData.context.currentBranch && <span className="text-sm text-white">✓</span>}
                                 </div>
-                                <span className="text-black">Current Branch (feature/auth)</span>
+                                <span className="text-black">Current Branch {formData.context.currentBranch ? '(Included)' : ''}</span>
                             </button>
 
                             <button

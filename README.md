@@ -64,3 +64,4 @@ pnpm --filter devdoc-contracts build
 - `pnpm run build`: Build all packages and services.
 - `pnpm run test`: Run tests across the entire workspace.
 - `pnpm -r <command>`: Run a command in every package.
+

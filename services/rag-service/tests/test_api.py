@@ -51,6 +51,7 @@ def test_query_endpoint(mock_query):
     
     # The real service returns a Response object
     mock_response.response = "Here is the answer."
+    mock_response.__str__.return_value = "Here is the answer."
     mock_response.source_nodes = [mock_node]
     mock_query.return_value = mock_response
 
@@ -65,15 +66,20 @@ def test_query_endpoint(mock_query):
     
     assert response.status_code == 200
     data = response.json()
-    # Contract RAGQueryResponse only returns results, not the top-level answer.
-    # assert "answer" in data
+    
+    assert "answer" in data
+    assert data["answer"] == "Here is the answer."
     assert len(data["results"]) == 1
     assert data["results"][0]["metadata"]["id"] == "auth_doc_1"
     
     # Verify model param was passed to service
     mock_query.assert_called_with(
         query="how does auth work?",
-        filters=None, # The API does not automatically construct filters from top-level fields yet
+        project_id="proj_1",
+        filters=None, 
         top_k=5,
-        model="openai/gpt-4o"
+        model="openai/gpt-4o",
+        doc_type="Technical",
+        doc_style="Technical (Default)",
+        api_key=None
     )

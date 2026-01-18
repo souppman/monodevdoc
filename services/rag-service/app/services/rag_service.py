@@ -8,6 +8,7 @@ from pinecone import Pinecone
 from supabase import create_client, Client
 from app.config import settings
 from devdoc_contracts import RAGIndexRequest, RAGIndexMetadata
+from app.schemas import RAGQueryResponse
 
 logger = logging.getLogger(__name__)
 
@@ -212,8 +213,20 @@ class RAGService:
                 {"response_synthesizer:text_qa_template": new_summary_tmpl}
             )
 
-            logger.info(f"Executing query with model {model or 'default'}")
+            logger.info(f"Executing query with model {model or 'default'} for project {project_id}")
+            
+            # INSPECT RETRIEVAL
+            retriever = query_engine.retriever
+            nodes = retriever.retrieve(query)
+            logger.info(f"Retrieved {len(nodes)} nodes for query.")
+            
+            if len(nodes) == 0:
+                logger.warning(f"RAG Retrieval returned 0 nodes. Check project_id match: {project_id}")
+                return RAGQueryResponse(results=[], answer="No relevant context found in this project.")
+
             response = query_engine.query(query)
+            
+            logger.debug(f"LLM Response snippet: {str(response)[:100]}...")
             
             return response
 

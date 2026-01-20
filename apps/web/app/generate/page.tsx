@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export default function GenerateDocumentation() {
   const [formData, setFormData] = useState({
@@ -23,6 +23,8 @@ export default function GenerateDocumentation() {
 
   const [isSaving, setIsSaving] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+
+  const generatedContentRef = useRef<HTMLElement>(null);
 
   const handleGenerate = async () => {
     const projectId = localStorage.getItem('current_project_id');
@@ -82,6 +84,11 @@ export default function GenerateDocumentation() {
 
       const snippets = data.results.map((r: any) => `### Source: ${r.metadata?.source || 'Unknown'}\n\n${r.content}`).join('\n\n---\n\n');
       setGeneratedSources(snippets);
+
+      // Scroll to the generated content after a short delay to allow render
+      setTimeout(() => {
+        generatedContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
 
     } catch (error) {
       console.error('Error generating docs:', error);
@@ -344,7 +351,7 @@ export default function GenerateDocumentation() {
 
       {/* Result Display */}
       {generatedContent && (
-        <section className="max-w-4xl mx-auto px-8 pb-12">
+        <section ref={generatedContentRef} className="max-w-4xl mx-auto px-8 pb-12">
           <div className="bg-white p-8 rounded-lg border border-gray-300 shadow-sm">
             <h2 className="text-2xl font-bold text-black mb-6">Generated {formData.docType}</h2>
             <div className="prose max-w-none text-black whitespace-pre-wrap mb-8">

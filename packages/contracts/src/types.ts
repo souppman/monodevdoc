@@ -81,11 +81,12 @@ export interface RAGQueryRequest {
 
 export interface RAGQueryResponse {
     results: {
+        id: string;
         content: string;
-        source: 'journal' | 'code' | 'general';
+        score: number;
         metadata: any;
     }[];
-    generated_answer: string;
+    answer: string;
 }
 
 // Journal Service Contracts

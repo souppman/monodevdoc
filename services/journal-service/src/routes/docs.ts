@@ -71,6 +71,48 @@ router.post('/', async (req: Request, res: Response) => {
     }
 });
 
+const UpdateDocSchema = z.object({
+    title: z.string().optional(),
+    content: z.string().optional()
+}).refine(data => data.title || data.content, {
+    message: 'At least one of title or content must be provided'
+});
+
+// PUT /docs/:id - Update doc
+router.put('/:id', async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        const parseResult = UpdateDocSchema.safeParse(req.body);
+        if (!parseResult.success) {
+            const errorMessage = parseResult.error.issues.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
+            return res.status(400).json({ error: `Invalid payload: ${errorMessage}` });
+        }
+
+        const { title, content } = parseResult.data;
+
+        // Check if document exists first
+        const existing = await prisma.generatedDoc.findUnique({ where: { id } });
+        if (!existing) {
+            return res.status(404).json({ error: 'Document not found' });
+        }
+
+        const doc = await prisma.generatedDoc.update({
+            where: { id },
+            data: {
+                ...(title && { title }),
+                ...(content && { content }),
+                updatedAt: new Date()
+            }
+        });
+
+        res.json(doc);
+    } catch (error) {
+        logger.error({ err: error }, 'Failed to update doc');
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 // DELETE /docs/:id - Delete doc
 router.delete('/:id', async (req: Request, res: Response) => {
     try {

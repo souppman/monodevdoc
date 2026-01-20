@@ -157,24 +157,31 @@ export default function Dashboard() {
             {/* Modal Content */}
             <div className="flex-1 overflow-y-auto p-8 bg-gray-50">
               <div className="max-w-none prose prose-slate bg-white p-10 rounded-xl shadow-sm border border-gray-200 mx-auto">
-                <pre className="whitespace-pre-wrap font-sans text-gray-800">{selectedDoc.content}</pre>
+                <pre className="whitespace-pre-wrap font-sans bg-white text-gray-800">{selectedDoc.content}</pre>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="border-t border-gray-200 px-8 py-4 bg-white flex justify-end gap-3">
-              <button
-                onClick={() => handleDelete(selectedDoc.id, { stopPropagation: () => { } } as any)}
-                className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-colors border border-transparent hover:border-red-100"
-              >
-                Delete
-              </button>
-              <button
-                onClick={() => setSelectedDoc(null)}
-                className="px-6 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium transition-colors"
-              >
-                Close
-              </button>
+            <div className="border-t border-gray-200 px-8 py-4 bg-white flex justify-between gap-3">
+              <Link
+                href={`/editor?docId=${selectedDoc.id}`}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                  Edit
+              </Link>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => handleDelete(selectedDoc.id, { stopPropagation: () => { } } as any)}
+                  className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-colors border border-transparent hover:border-red-100"
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() => setSelectedDoc(null)}
+                  className="px-6 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium transition-colors"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>

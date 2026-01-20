@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEditor, useEditorState, EditorContent } from '@tiptap/react';
 import type { Editor } from '@tiptap/react';
@@ -9,7 +10,7 @@ import { Markdown } from '@tiptap/markdown';
 import { Undo2, Redo2, Bold, Italic, Strikethrough } from 'lucide-react';
 import { Heading1, Heading2, Heading3 } from 'lucide-react';
 import { Quote, ListOrdered, List, SquareCode } from 'lucide-react';
-import { Minus, Link2, ArrowLeft, ChevronDown, ChevronRight } from 'lucide-react';
+import { Minus, Link2, ArrowLeft } from 'lucide-react';
 import './tiptap-styles.css';
 
 function Toolbar({ editor }: {editor: Editor }) {
@@ -166,21 +167,11 @@ function Toolbar({ editor }: {editor: Editor }) {
 }
 
 export default function DocumentEditor() {
-    const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-        requirements: true,
-        architecture: true,
-        userGuide: true,
-        techSpecs: true,
-    });
+    const searchParams = useSearchParams();
+    const docId = searchParams.get('docId');
 
-    const [selectedDoc, setSelectedDoc] = useState<string>('system-overview');
-
-    const toggleSection = (section: string) => {
-        setOpenSections(prev => ({
-            ...prev,
-            [section]: !prev[section]
-        }));
-    };
+    const [docData, setDocData] = useState<any>(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     const editor = useEditor({
         extensions: [
@@ -192,188 +183,90 @@ export default function DocumentEditor() {
                 class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none'
             }
         },
-        content: `Hello World! Start typing to get started!`,
+        content: ``,
+        contentType: 'markdown',
         shouldRerenderOnTransaction: true,
         immediatelyRender: false
     })
 
+    // Fetch document data when docId is present
+    useEffect(() => {
+        if (docId && editor) {
+            fetch(`/api/docs/${docId}`)
+                .then(res => res.json())
+                .then(data => {
+                    setDocData(data);
+                    editor.commands.setContent(data.content || '', { contentType : 'markdown'});
+                })
+                .catch(err => console.error('Failed to fetch document', err));
+        }
+    }, [docId, editor])
+
     if (!editor) return null;
 
-    const aiModify = () => {
+    const saveFile = async () => {
+        if (!docId) {
+            alert('No document to save. Please open a document from the dashboard first.');
+            return;
+        }
+
         const markdownContent = editor.getMarkdown();
+        setIsSaving(true);
 
-        console.log(markdownContent);
+        try {
+            const res = await fetch(`/api/docs/${docId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: markdownContent })
+            });
 
-        /* TO-DO INSERT BFF CALL TO MAKE AI EDITS TO CURRENT DOCUMENT */
-    }
-
-    const saveFile = () => {
-        const markdownContent = editor.getMarkdown();
-
-        console.log(markdownContent);
-
-        /* TO-DO INSERT BFF CALL TO SAVE DOCUMENT */
-    }
-
-    const createDocument = () => {
-        /* TO-DO INSERT FUNCTION TO ADD A NEW BLANK DOCUMENT */
+            if (res.ok) {
+                const updated = await res.json();
+                setDocData(updated);
+                alert('Document saved successfully!');
+            } else {
+                const error = await res.json();
+                alert(`Failed to save: ${error.error || 'Unknown error'}`);
+            }
+        } catch (err) {
+            console.error('Failed to save document', err);
+            alert('Failed to save document. Please try again.');
+        } finally {
+            setIsSaving(false);
+        }
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-white">
+        <div className="flex flex-col max-h-screen bg-white">
             <header className="flex items-center justify-between px-8 py-6 border-b border-gray-200">
                 <div className="flex gap-5">
                     <Link href="/dashboard"className="flex items-center gap-1">
                         <ArrowLeft className="w-5 h-5 text-gray-500" />
                         <h3 className="text-lg font-medium text-gray-500">Back</h3>
                     </Link>
-                    <h1 className="text-3xl font-bold text-black">Documentation Editor</h1>
+                    <h1 className="text-3xl font-bold text-black">
+                        {docData?.title || 'Documentation Editor'}
+                    </h1>
                 </div>
                 <div className="flex gap-3">
                     <button
-                        onClick={aiModify}
-                        className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                            Modify with AI
-                    </button>
-                    <button 
-                        onClick={saveFile} 
-                        className="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-                            Save File
+                        onClick={saveFile}
+                        disabled={isSaving}
+                        className="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            {isSaving ? 'Saving...' : 'Save File'}
                     </button>
                 </div>
             </header>
-            {/* Sidebar & Editor */}
-            <div className="flex grow-1">
-                
-                {/* Sidebar */}
-                <aside className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-lg font-semibold text-gray-900">Documents</h2>
-                        <button 
-                            onClick={createDocument}
-                            className="px-4 py-1 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-                            + New
-                        </button>
-                    </div>
+            {/* Editor */}
+            <div className="flex flex-col flex-1 overflow-hidden">
 
-                    {/* Documents Tree */}
-                    <div className="space-y-2">
-                        {/* Requirements Section */}
-                        <div>
-                            <button
-                                onClick={() => toggleSection('requirements')}
-                                className="w-full text-left px-3 py-2 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-2"
-                            >
-                                {openSections.requirements ? (
-                                    <ChevronDown className="w-4 h-4" />
-                                ) : (
-                                    <ChevronRight className="w-4 h-4" />
-                                )}
-                                Requirements
-                            </button>
-                            {openSections.requirements && (
-                                <div className="ml-4 mt-1 space-y-1">
-                                    <button
-                                        onClick={() => setSelectedDoc('functional-req')}
-                                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                                            selectedDoc === 'functional-req'
-                                                ? 'bg-blue-50 text-blue-600 font-medium'
-                                                : 'text-gray-700 hover:bg-gray-100'
-                                        }`}
-                                    >
-                                        Functional Req.
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Architecture Section */}
-                        <div>
-                            <button
-                                onClick={() => toggleSection('architecture')}
-                                className="w-full text-left px-3 py-2 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-2"
-                            >
-                                {openSections.architecture ? (
-                                    <ChevronDown className="w-4 h-4" />
-                                ) : (
-                                    <ChevronRight className="w-4 h-4" />
-                                )}
-                                Architecture
-                            </button>
-                            {openSections.architecture && (
-                                <div className="ml-4 mt-1 space-y-1">
-                                    <button
-                                        onClick={() => setSelectedDoc('system-overview')}
-                                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                                            selectedDoc === 'system-overview'
-                                                ? 'bg-blue-50 text-blue-600 font-medium'
-                                                : 'text-gray-700 hover:bg-gray-100'
-                                        }`}
-                                    >
-                                        System Overview
-                                    </button>
-                                    <button
-                                        onClick={() => setSelectedDoc('database-schema')}
-                                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                                            selectedDoc === 'database-schema'
-                                                ? 'bg-blue-50 text-blue-600 font-medium'
-                                                : 'text-gray-700 hover:bg-gray-100'
-                                        }`}
-                                    >
-                                        Database Schema
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-
-
-                        {/* User Guide Section */}
-                        <div>
-                            <button
-                                onClick={() => toggleSection('userGuide')}
-                                className="w-full text-left px-3 py-2 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-2"
-                            >
-                                {openSections.userGuide ? (
-                                    <ChevronDown className="w-4 h-4" />
-                                ) : (
-                                    <ChevronRight className="w-4 h-4" />
-                                )}
-                                User Guide
-                            </button>
-                            {openSections.userGuide && (
-                                <div className="ml-4 mt-1 space-y-1">
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Technical Specs Section */}
-                        <div>
-                            <button
-                                onClick={() => toggleSection('techSpecs')}
-                                className="w-full text-left px-3 py-2 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-2"
-                            >
-                                {openSections.techSpecs ? (
-                                    <ChevronDown className="w-4 h-4" />
-                                ) : (
-                                    <ChevronRight className="w-4 h-4" />
-                                )}
-                                Technical Specifications
-                            </button>
-                            {openSections.techSpecs && (
-                                <div className="ml-4 mt-1 space-y-1">
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </aside>
+                {/* Toolbar */}
+                <div className="sticky top-0 z-10 bg-white px-8 py-4 border-b border-gray-200">
+                    <Toolbar editor={ editor } />
+                </div>
 
                 {/* Main Editor Area */}
-                <main className="px-8 py-6 flex-1 bg-white flex flex-col">
-                    
-                    {/* Toolbar */}
-                    <Toolbar editor={ editor } />
-
-                    {/* Editor Content */}
+                <main className="flex-1 overflow-y-auto px-8 py-6 bg-white">
                     <EditorContent editor={ editor } />
                 </main>
             </div>

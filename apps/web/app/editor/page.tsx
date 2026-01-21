@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEditor, useEditorState, EditorContent } from '@tiptap/react';
@@ -166,7 +166,7 @@ function Toolbar({ editor }: {editor: Editor }) {
     );
 }
 
-export default function DocumentEditor() {
+function DocumentEditorContent() {
     const searchParams = useSearchParams();
     const docId = searchParams.get('docId');
 
@@ -271,5 +271,13 @@ export default function DocumentEditor() {
                 </main>
             </div>
         </div>
+    );
+}
+
+export default function DocumentEditor() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+            <DocumentEditorContent />
+        </Suspense>
     );
 }

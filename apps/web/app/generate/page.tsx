@@ -1,26 +1,185 @@
 'use client';
 
-import { useState } from 'react';
-import { Sparkles } from 'lucide-react';
+import { useState, useRef } from 'react';
 
 export default function GenerateDocumentation() {
-    const [formData, setFormData] = useState({
-        docType: 'Architecture Documentation',
-        context: {
-            currentBranch: true,
-            allBranches: false,
-            recentCommits: true,
-        },
-        journal: {
-            allEntries: true,
-            taggedOnly: true,
-        },
-        instructions: 'Focus on microservices architecture and include deployment strategies ...',
-    });
+  const [formData, setFormData] = useState({
+    docType: 'Architecture Documentation',
+    context: {
+      currentBranch: true,
+      allBranches: false,
+      recentCommits: true,
+    },
+    journal: {
+      allEntries: true,
+      taggedOnly: true,
+    },
+    instructions: '',
+  });
 
-    const handleGenerate = () => {
-        console.log('Generating documentation...', formData);
-    };
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+  const [generatedSources, setGeneratedSources] = useState<string | null>(null);
+
+  const [isSaving, setIsSaving] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const generatedContentRef = useRef<HTMLElement>(null);
+
+  const handleGenerate = async () => {
+    const projectId = localStorage.getItem('current_project_id');
+    if (!projectId) {
+      alert('Please connect to a repository first.');
+      return;
+    }
+
+    const docStyle = localStorage.getItem('settings_doc_style') || 'Technical (Default)';
+
+    setIsGenerating(true);
+    setGeneratedContent(null);
+    setGeneratedSources(null);
+
+    try {
+      // Construct a prompt based on form selection
+      const prompt = `
+        Generate ${formData.docType} for the current project.
+        Context: ${formData.context.currentBranch ? 'Current Branch' : ''} ${formData.context.allBranches ? 'All Branches' : ''}.
+        Include Journal Entries: ${formData.journal.allEntries ? 'Yes' : 'No'}.
+        Additional Instructions: ${formData.instructions}
+      `;
+
+      // Get settings from local storage
+      const apiKey = localStorage.getItem('settings_openrouter_key');
+      const aiModel = localStorage.getItem('settings_ai_model');
+
+      if (!apiKey) {
+        alert('Please set your OpenRouter API Key in Settings.');
+        setIsGenerating(false);
+        return;
+      }
+
+      const res = await fetch('/api/rag/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-OpenRouter-Key': apiKey,
+          'X-OpenRouter-Model': aiModel || 'openai/gpt-4o-mini',
+        },
+        body: JSON.stringify({
+          query: prompt,
+          doc_type: formData.docType,
+          doc_style: docStyle,
+          project_id: projectId,
+          top_k: 5,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to generate documentation');
+      }
+
+      const data = await res.json();
+
+      setGeneratedContent(data.answer || "No answer generated.");
+
+      const snippets = data.results.map((r: any) => `### Source: ${r.metadata?.source || 'Unknown'}\n\n${r.content}`).join('\n\n---\n\n');
+      setGeneratedSources(snippets);
+
+      // Scroll to the generated content after a short delay to allow render
+      setTimeout(() => {
+        generatedContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+
+    } catch (error) {
+      console.error('Error generating docs:', error);
+      alert('Failed to generate documentation. Please check console.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleSave = async () => {
+    // Deterministically resolve Project ID from Repo Name if possible
+    let projectId = localStorage.getItem('current_project_id');
+    const repoFullName = localStorage.getItem('current_repo_full_name');
+
+    if (repoFullName) {
+      try {
+        const lookupRes = await fetch(`/api/projects/lookup?repoUrl=${repoFullName}`);
+        if (lookupRes.ok) {
+          const projectData = await lookupRes.json();
+          projectId = projectData.id;
+          // Sync local storage to be correct
+          localStorage.setItem('current_project_id', projectData.id);
+        }
+      } catch (e) {
+        console.warn('Failed to resolve project by repo name, falling back to stored ID', e);
+      }
+    }
+
+    if (!projectId || !generatedContent) {
+      if (!projectId) alert('No project connected. Please configure a repository in Settings.');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/docs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: `${formData.docType} - ${new Date().toLocaleString()}`,
+          content: generatedContent,
+          docType: formData.docType,
+          docStyle: localStorage.getItem('settings_doc_style') || 'Default',
+          projectId
+        })
+      });
+
+      if (res.ok) {
+        alert('Documentation saved successfully!');
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to save');
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      alert('Failed to save documentation.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleExport = async () => {
+    if (!generatedContent) return;
+    setIsExporting(true);
+    try {
+      const filename = `${formData.docType.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.md`;
+      const res = await fetch('/api/rag/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: generatedContent,
+          filename: filename
+        })
+      });
+
+      if (!res.ok) throw new Error('Export failed');
+
+      const data = await res.json();
+      if (data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        alert('Export succeeded but no URL returned.');
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+      alert('Failed to export.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
 
     return (
         <div className="flex-1 bg-white">
@@ -29,7 +188,7 @@ export default function GenerateDocumentation() {
             </header>
 
             <main className="px-8 py-6">
-                <div className="flex flex-col items-end gap-6">
+                <div className="flex flex-col items-center gap-6">
                     {/* Documentation Type */}
                     <div className="w-full px-8 py-6 border border-gray-200 rounded-lg">
                         <label htmlFor="docType" className="block mb-3 font-semibold text-gray-900">
@@ -73,7 +232,7 @@ export default function GenerateDocumentation() {
                                 >
                                     {formData.context.currentBranch && <span className="text-sm text-white">✓</span>}
                                 </div>
-                                <span className="text-black">Current Branch (feature/auth)</span>
+                                <span className="text-black">Current Branch {formData.context.currentBranch ? '(Included)' : ''}</span>
                             </button>
 
                             <button
@@ -180,15 +339,54 @@ export default function GenerateDocumentation() {
 
                     {/* Generate button */}
                     <button
-                        type="button"
-                        onClick={handleGenerate}
-                        className="flex items-center justify-center gap-2 px-6 py-2 text-lg text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                      onClick={handleGenerate}
+                      disabled={isGenerating}
+                      className={`px-6 py-2 text-lg text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors transition-colors ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
                     >
-                        <Sparkles className="w-5 h-5 text-white" />
-                        Generate Documentation
+                      {isGenerating ? 'Generating...' : 'Generate Documentation'}
                     </button>
-                </div>
-            </main>
         </div>
-    );
+      </main>
+
+      {/* Result Display */}
+      {generatedContent && (
+        <section ref={generatedContentRef} className="max-w-4xl mx-auto px-8 pb-12">
+          <div className="bg-white p-8 rounded-lg border border-gray-300 shadow-sm">
+            <h2 className="text-2xl font-bold text-black mb-6">Generated {formData.docType}</h2>
+            <div className="prose max-w-none text-black whitespace-pre-wrap mb-8">
+              {generatedContent}
+            </div>
+
+            <div className="flex justify-end mb-6">
+              <button
+                onClick={handleExport}
+                disabled={isExporting}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors disabled:opacity-50 mr-4"
+              >
+                {isExporting ? 'Exporting...' : 'Export to S3'}
+              </button>
+
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition-colors disabled:opacity-50"
+              >
+                {isSaving ? 'Saving...' : 'Save to Project'}
+              </button>
+            </div>
+
+            <hr className="my-6 border-gray-200" />
+
+            <details>
+              <summary className="cursor-pointer text-gray-500 font-medium">View Source Context (RAG Verification)</summary>
+              <div className="mt-4 p-4 bg-gray-50 rounded border border-gray-200 text-xs text-gray-600 font-mono whitespace-pre-wrap">
+                {generatedSources || 'No source context available.'}
+              </div>
+            </details>
+          </div>
+        </section>
+      )}
+    </div>
+  );
 }

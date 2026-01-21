@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface JournalEntry {
@@ -15,32 +15,33 @@ interface JournalEntry {
 export default function JournalDashboard() {
     const [activeFilter, setActiveFilter] = useState<'all' | 'commit' | 'branch' | 'tagged'>('all');
 
-    const entries: JournalEntry[] = [
-        {
-            id: 1,
-            time: '2 hours ago',
-            commit: 'commit abc123f',
-            title: 'Auth implementation decision',
-            excerpt: '"Decided to use JWT tokens instead of sessions ..."',
-            tags: [{tag: 'architecture', color: 'yellow'}, {tag: 'database', color: 'yellow'}],
-        },
-        {
-            id: 2,
-            time: 'Yesterday',
-            commit: 'branch feature/docs',
-            title: 'Documentation tooling research',
-            excerpt: '"Researched Docusaurus and Mintlify ..."',
-            tags: [{tag: 'docs', color: 'blue'}],
-        },
-        {
-            id: 3,
-            time: '3 days ago',
-            commit: 'JIRA-456',
-            title: 'API rate limiting strategy',
-            excerpt: '"Implemented sliding window rate limiter ..."',
-            tags: [{tag: 'api', color: 'purple'}],
-        },
-    ];
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  const [journalEntries, setJournalEntries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch entries on mount
+  useEffect(() => {
+    async function fetchEntries() {
+      const storedProject = localStorage.getItem('current_project_id');
+      if (!storedProject) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/journal/entries?projectId=${encodeURIComponent(storedProject)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setJournalEntries(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch journal entries', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchEntries();
+  }, []);
 
     return (
         <div className="flex-1 bg-white">
@@ -106,29 +107,26 @@ export default function JournalDashboard() {
 
                 {/* Journal Entries */}
                 <div className="flex flex-col gap-6">
-                    {entries.map((entry) => (
-                        <div key={entry.id} className="px-8 py-6 border border-gray-200 rounded-lg">
-                            <p className="mb-2 text-xs text-gray-500">
-                                {entry.time} • {entry.commit}
-                            </p>
-                            <h3 className="mb-2 text-xl font-bold text-black">
-                                {entry.title}
-                            </h3>
-                            <p className="mb-4 text-sm text-gray-700">{entry.excerpt}</p>
-                            <div className="flex gap-2">
-                                {entry.tags.map((tag, index) => (
-                                    <span
-                                        key={index}
-                                        className={`px-3 py-1 text-xs rounded-full bg-${tag.color}-100 text-${tag.color}-600`}
-                                    >
-                                        {tag.tag}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
+                  {loading ? (
+                    <div className="text-center py-10 text-gray-500">Loading journal entries...</div>
+                  ) : journalEntries.length === 0 ? (
+                    <div className="text-center py-10 text-gray-500">No journal entries found. Start coding!</div>
+                  ) : (
+                    journalEntries.map((entry) => (
+                      <div key={entry.id} className="px-8 py-6 border border-gray-200 rounded-lg">
+                        <p className="text-xs text-gray-500 mb-2">
+                          {new Date(entry.createdAt).toLocaleDateString()} • {entry.gitCommitHash || 'No Commit'}
+                        </p>
+                        <h2 className="text-xl font-bold text-black mb-2">
+                          {/* Title extracted from content or fallback */}
+                          {entry.content.substring(0, 50)}...
+                        </h2>
+                        <p className="text-sm text-gray-700 mb-4">{entry.content}</p>
+                      </div>
+                    ))
+                  )}
                 </div>
             </main>
-        </div>
-    );
+    </div>
+  );
 }

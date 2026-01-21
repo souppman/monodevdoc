@@ -30,6 +30,35 @@ export const createJournalEntry = async (input: JournalEntryInput) => {
     // 1. Create in DB
     let savedEntry;
     try {
+
+
+        // Ensure User and Project exist (Lazy Sync)
+        // This is crucial because Auth is handled by BFF (Stateless), so the DB might not know this User/Project yet.
+
+        // 1. Upsert User (Author)
+        // We use the GitHub Login as the ID for simplicity and stability across sessions.
+        await prisma.user.upsert({
+            where: { id: input.author_id },
+            update: {},
+            create: {
+                id: input.author_id,
+                email: `${input.author_id}@github.placeholder`, // unique requirement
+                name: input.author_id,
+            }
+        });
+
+        // 2. Upsert Project
+        await prisma.project.upsert({
+            where: { id: input.project_id },
+            update: {},
+            create: {
+                id: input.project_id,
+                name: input.project_id,
+                repoUrl: input.git_context.repo_url,
+                ownerId: input.author_id,
+            }
+        });
+
         savedEntry = await prisma.journalEntry.create({
             data: {
                 id: input.id || undefined,
@@ -69,12 +98,10 @@ export const createJournalEntry = async (input: JournalEntryInput) => {
         await axios.post(`${RAG_SERVICE_URL}/index`, ragPayload);
         logger.info({ entryId: savedEntry.id }, 'Successfully indexed to RAG');
     } catch (ragError: any) {
-        logger.error({ err: ragError }, 'RAG Indexing failed, performing rollback');
-
-        // ROLLBACK
-        await prisma.journalEntry.delete({ where: { id: savedEntry.id } });
-
-        throw new Error('RAG Service unavailable - Entry rolled back');
+        const errorDetail = ragError.response?.data || ragError.message;
+        logger.warn({ err: errorDetail, status: ragError.response?.status }, 'RAG Indexing failed, but entry saved to DB');
+        // No rollback - we want to keep the entry even if RAG is down
+        // await prisma.journalEntry.delete({ where: { id: savedEntry.id } });
     }
 
     return savedEntry;

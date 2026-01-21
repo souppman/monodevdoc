@@ -1,6 +1,123 @@
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Github, Zap, TreePine, Slack, SquareKanban, Download } from 'lucide-react';
 
+
 export default function Settings() {
+    const router = useRouter();
+    const [repoName, setRepoName] = useState('Loading...');
+    const [aiModel, setAiModel] = useState('openai/gpt-4o-mini');
+    const [openRouterKey, setOpenRouterKey] = useState('');
+    const [docStyle, setDocStyle] = useState('Technical (Default)');
+    const [isExporting, setIsExporting] = useState(false);
+
+    const [branches, setBranches] = useState<string[]>([]);
+    const [defaultBranch, setDefaultBranch] = useState('main');
+
+    useEffect(() => {
+        const storedRepo = localStorage.getItem('current_project_id');
+        const repoFullName = localStorage.getItem('current_repo_full_name');
+
+        if (repoFullName) {
+            setRepoName(`github.com/${repoFullName}`);
+        } else if (storedRepo) {
+            setRepoName(`github.com/souppman/${storedRepo}`);
+        } else {
+            setRepoName('No repository connected');
+        }
+
+        if (repoFullName) {
+            const [owner, repo] = repoFullName.split('/');
+            // Fetch branches
+            fetch(`/api/github/branches?owner=${owner}&repo=${repo}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        setBranches(data.map((b: any) => b.name));
+                    }
+                })
+                .catch(err => console.error('Failed to fetch branches', err));
+        }
+
+        const storedModel = localStorage.getItem('settings_ai_model');
+        if (storedModel) setAiModel(storedModel);
+
+        const storedKey = localStorage.getItem('settings_openrouter_key');
+        if (storedKey) setOpenRouterKey(storedKey);
+
+        const storedStyle = localStorage.getItem('settings_doc_style');
+        if (storedStyle) setDocStyle(storedStyle);
+
+        const storedBranch = localStorage.getItem('settings_default_branch');
+        if (storedBranch) setDefaultBranch(storedBranch);
+    }, []);
+
+    const handleChangeProject = () => {
+        // Redirect to GitHub Auth page to select a different repository
+        router.push('/github-auth');
+    };
+
+    const handleSave = () => {
+        localStorage.setItem('settings_ai_model', aiModel);
+        localStorage.setItem('settings_openrouter_key', openRouterKey);
+        localStorage.setItem('settings_doc_style', docStyle);
+        localStorage.setItem('settings_default_branch', defaultBranch);
+        alert('Settings saved successfully!');
+    };
+
+    const handleExport = async () => {
+        const storedRepo = localStorage.getItem('current_project_id');
+        if (!storedRepo) {
+            alert('No project connected to export.');
+            return;
+        }
+
+        setIsExporting(true);
+        try {
+            // Fetch all entries for this project
+            const res = await fetch(`/api/journal/entries?projectId=${encodeURIComponent(storedRepo)}`);
+            if (!res.ok) throw new Error('Failed to fetch entries');
+
+            const entries = await res.json();
+
+            if (!Array.isArray(entries) || entries.length === 0) {
+                alert('No journal entries found to export.');
+                setIsExporting(false);
+                return;
+            }
+
+            // Build Markdown Content
+            let mdContent = `# Developer Journal Export\nProject: ${storedRepo}\nExported: ${new Date().toLocaleString()}\n\n---\n\n`;
+
+            entries.forEach((entry: any) => {
+                const date = new Date(entry.createdAt).toLocaleString();
+                mdContent += `## ${date}\n\n`;
+                if (entry.gitCommitHash) mdContent += `**Commit:** \`${entry.gitCommitHash}\`\n\n`;
+                if (entry.gitBranch) mdContent += `**Branch:** \`${entry.gitBranch}\`\n\n`;
+                if (entry.content) mdContent += `${entry.content}\n\n`;
+                mdContent += `---\n\n`;
+            });
+
+            // Trigger Download
+            const blob = new Blob([mdContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `devdoc-${storedRepo}-export.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+        } catch (error) {
+            console.error('Export failed:', error);
+            alert('Failed to export documentation.');
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
     return (
         <div className="flex-1 bg-white">
             {/* Header */}
@@ -23,10 +140,13 @@ export default function Settings() {
                                 <input
                                     type="text"
                                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-black"
-                                    defaultValue="github.com/user/test-project"
+                                    value={repoName}
                                     readOnly
                                 />
-                                <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                <button
+                                    onClick={handleChangeProject}
+                                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                                >
                                     Change
                                 </button>
                             </div>
@@ -35,10 +155,21 @@ export default function Settings() {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Default Branch
                             </label>
-                            <select className="px-4 py-2 border border-gray-300 rounded-lg text-black">
-                                <option>main</option>
-                                <option>develop</option>
-                                <option>really-long-branch-name-test</option>
+                            <select
+                                value={defaultBranch}
+                                onChange={(e) => setDefaultBranch(e.target.value)}
+                                className="px-4 py-2 border border-gray-300 rounded-lg text-black"
+                            >
+                                {branches.length > 0 ? (
+                                    branches.map(branch => (
+                                        <option key={branch} value={branch}>{branch}</option>
+                                    ))
+                                ) : (
+                                    <>
+                                        <option>main</option>
+                                        <option>master</option>
+                                    </>
+                                )}
                             </select>
                         </div>
                     </div>
@@ -50,18 +181,47 @@ export default function Settings() {
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                AI Model
+                                AI Model (OpenRouter)
                             </label>
-                            <select className="px-4 py-2 border border-gray-300 rounded-lg text-black">
-                                <option>GPT-4 (Recommended)</option>
-                                <option>Claude 3 Sonnet</option>
+                            <select
+                                value={aiModel}
+                                onChange={(e) => setAiModel(e.target.value)}
+                                className="px-4 py-2 border border-gray-300 rounded-lg text-black w-full"
+                            >
+                                <option value="openai/gpt-4o-mini">openai/gpt-4o-mini</option>
+                                <option value="x-ai/grok-4-fast">x-ai/grok-4-fast</option>
+                                <option value="google/gemma-3-27b-it:free">google/gemma-3-27b-it:free</option>
+                                <option value="anthropic/claude-haiku-4.5">anthropic/claude-haiku-4.5</option>
+                                <option value="mistralai/devstral-2512:free">mistralai/devstral-2512:free</option>
+                                <option value="google/gemini-3-flash-preview">google/gemini-3-flash-preview</option>
+                                <option value="x-ai/grok-code-fast-1">x-ai/grok-code-fast-1</option>
+                                <option value="anthropic/claude-sonnet-4.5">anthropic/claude-sonnet-4.5</option>
                             </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                OpenRouter API Key
+                            </label>
+                            <input
+                                type="password"
+                                value={openRouterKey}
+                                onChange={(e) => setOpenRouterKey(e.target.value)}
+                                placeholder="sk-or-..."
+                                className="px-4 py-2 border border-gray-300 rounded-lg text-black w-full"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">
+                                Your key is stored locally in your browser for security.
+                            </p>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Documentation Style
                             </label>
-                            <select className="px-4 py-2 border border-gray-300 rounded-lg text-black">
+                            <select
+                                value={docStyle}
+                                onChange={(e) => setDocStyle(e.target.value)}
+                                className="px-4 py-2 border border-gray-300 rounded-lg text-black w-full"
+                            >
                                 <option>Technical (Default)</option>
                                 <option>Beginner Friendly</option>
                                 <option>Comprehensive</option>
@@ -71,95 +231,18 @@ export default function Settings() {
                     </div>
                 </div>
 
-                {/* Integrations */}
+                {/* Export - Local Download Only */}
                 <div className="px-8 py-6 border border-gray-200 rounded-lg">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Integrations</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Export</h2>
                     <div className="space-y-3">
-
-                        {/* GitHub */}
-                        <div className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
-                                    <Github className="w-5 h-5 text-white" />
-                                </div>
-                                <div>
-                                    <div className="font-medium text-gray-900">GitHub</div>
-                                    <div className="text-sm text-gray-500">Connected as @user</div>
-                                </div>
-                            </div>
-                            <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">Connected</span>
-                        </div>
-
-                        {/* Supabase */}
-                        <div className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-green-400 rounded-lg flex items-center justify-center">
-                                    <Zap className="w-5 h-5 text-white" />
-                                </div>
-                                <div>
-                                    <div className="font-medium text-gray-900">Supabase</div>
-                                    <div className="text-sm text-gray-500">Database & auth</div>
-                                </div>
-                            </div>
-                            <span className="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">Connected</span>
-                        </div>
-
-                        {/* Pinecone */}
-                        <div className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center">
-                                    <TreePine className="w-5 h-5 text-white" />
-                                </div>
-                                <div>
-                                    <div className="font-medium text-gray-900">Pinecone</div>
-                                    <div className="text-sm text-gray-500">Vector Database for RAG</div>
-                                </div>
-                            </div>
-                            <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium">Not Connected</span>
-                        </div>
-                        {/* Slack */}
-                        <div className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-purple-700 rounded-lg flex items-center justify-center">
-                                    <Slack className="w-5 h-5 text-white" />
-                                </div>
-                                <div>
-                                    <div className="font-medium text-gray-900">Slack</div>
-                                    <div className="text-sm text-gray-500">Notifications and sharing</div>
-                                </div>
-                            </div>
-                            <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium">Not Connected</span>
-                        </div>
-                        {/* Jira */}
-                        <div className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-blue-400 rounded-lg flex items-center justify-center">
-                                    <SquareKanban className="w-5 h-5 text-white" />
-                                </div>
-                                <div>
-                                    <div className="font-medium text-gray-900">Jira</div>
-                                    <div className="text-sm text-gray-500">Kanban Board Tickets</div>
-                                </div>
-                            </div>
-                            <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium">Not Connected</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Export & Backup */}
-                <div className="px-8 py-6 border border-gray-200 rounded-lg">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Export & Backup</h2>
-                    <div className="space-y-3">
-                        <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center justify-between">
-                            <span>Export all documentation as Markdown</span>
-                            <Download className="w-4 h-4" />
-                        </button>
-                        <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center justify-between">
-                            <span>Export journal entries as JSON</span>
-                            <Download className="w-4 h-4" />
-                        </button>
-                        <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center justify-between">
-                            <span>Backup to S3</span>
+                        <button
+                            onClick={handleExport}
+                            disabled={isExporting}
+                            className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center justify-between transition-colors disabled:opacity-50"
+                        >
+                            <span>
+                                {isExporting ? 'Generating Markdown...' : 'Export all documentation as Markdown'}
+                            </span>
                             <Download className="w-4 h-4" />
                         </button>
                     </div>
@@ -169,7 +252,10 @@ export default function Settings() {
                     <button className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
                         Cancel
                     </button>
-                    <button className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700">
+                    <button
+                        onClick={handleSave}
+                        className="px-6 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+                    >
                         Save Changes
                     </button>
                 </div>

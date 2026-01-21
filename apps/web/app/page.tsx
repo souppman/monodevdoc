@@ -17,7 +17,7 @@ export default function Home() {
 
                 {/* Subheading */}
                 <p className="text-lg text-gray-700">
-                    Your AI-Powered developer documentation assistant.
+                    AI-powered documentation for developers
                 </p>
 
                 {/* Connect GitHub button */}

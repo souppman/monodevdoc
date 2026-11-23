@@ -1,6 +1,6 @@
 # DevDoc Monorepo
 
-Unified repository for DevDoc services and shared contracts.
+Built to help developers understand a repo as well as their agent does.
 
 ##  Repository Structure 
 
